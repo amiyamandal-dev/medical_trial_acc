@@ -7,10 +7,7 @@ or intelligent LLM-based analysis.
 """
 import sys
 from pathlib import Path
-from langchain.globals import set_debug, set_verbose
 
-set_debug(True)
-set_verbose(True)
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
