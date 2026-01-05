@@ -1,0 +1,139 @@
+CLINICAL TRIAL PROTOCOL
+Protocol Number: CTR-2024-001-DM
+Version: 2.1
+Date: January 15, 2024
+
+TITLE: A Phase 3, Randomized, Double-Blind, Placebo-Controlled Study to Evaluate the Efficacy and Safety of GLP-1 Receptor Agonist XR-7842 in Patients with Type 2 Diabetes Mellitus
+
+1. PROTOCOL SUMMARY
+
+1.1 Synopsis
+This is a Phase 3, randomized, double-blind, placebo-controlled, multicenter study designed to evaluate the efficacy and safety of XR-7842, a novel GLP-1 receptor agonist, in adult patients with inadequately controlled Type 2 Diabetes Mellitus (T2DM).
+
+1.2 Study Duration
+- Screening Period: 2 weeks
+- Treatment Period: 52 weeks
+- Follow-up Period: 4 weeks
+- Total Study Duration: Approximately 58 weeks
+
+1.3 Number of Subjects
+Approximately 1,200 subjects will be randomized in a 1:1:1 ratio to receive:
+- XR-7842 5mg once weekly
+- XR-7842 10mg once weekly
+- Placebo once weekly
+
+2. INTRODUCTION AND BACKGROUND
+
+2.1 Disease Background
+Type 2 Diabetes Mellitus (T2DM) is a chronic metabolic disorder characterized by hyperglycemia resulting from insulin resistance and relative insulin deficiency. According to the International Diabetes Federation, approximately 537 million adults are living with diabetes worldwide.
+
+2.2 Study Rationale
+XR-7842 is a novel GLP-1 receptor agonist that has demonstrated promising efficacy in Phase 2 studies, with significant reductions in HbA1c and body weight. This Phase 3 study aims to confirm these findings in a larger patient population.
+
+3. STUDY OBJECTIVES AND ENDPOINTS
+
+3.1 Primary Objective
+To evaluate the efficacy of XR-7842 compared to placebo in reducing HbA1c from baseline to Week 52.
+
+3.2 Secondary Objectives
+- To evaluate the effect of XR-7842 on fasting plasma glucose (FPG)
+- To evaluate the effect of XR-7842 on body weight
+- To assess the safety and tolerability of XR-7842
+- To evaluate the effect on cardiovascular risk markers
+
+3.3 Primary Endpoint
+Change from baseline in HbA1c at Week 52
+
+3.4 Secondary Endpoints
+- Change from baseline in FPG at Week 52
+- Proportion of subjects achieving HbA1c <7%
+- Change from baseline in body weight
+- Incidence of adverse events and serious adverse events
+
+4. STUDY DESIGN
+
+4.1 Overall Design
+This is a multicenter, randomized, double-blind, placebo-controlled, parallel-group study.
+
+4.2 Randomization
+Subjects will be randomized in a 1:1:1 ratio using an interactive web response system (IWRS). Randomization will be stratified by:
+- Baseline HbA1c (<8.5% vs ≥8.5%)
+- Background diabetes medication (metformin monotherapy vs combination therapy)
+
+4.3 Blinding
+The study will be conducted in a double-blind manner. Study drug and placebo will be identical in appearance.
+
+5. STUDY POPULATION
+
+5.1 Inclusion Criteria
+1. Male or female, aged 18 to 75 years
+2. Diagnosis of T2DM for at least 6 months
+3. HbA1c ≥7.0% and ≤10.5% at screening
+4. Body Mass Index (BMI) ≥25 kg/m² and ≤45 kg/m²
+5. Stable dose of metformin (≥1500 mg/day) for at least 8 weeks prior to screening
+6. Willing and able to provide informed consent
+
+5.2 Exclusion Criteria
+1. Type 1 diabetes mellitus
+2. History of diabetic ketoacidosis
+3. Severe renal impairment (eGFR <30 mL/min/1.73m²)
+4. History of pancreatitis
+5. Personal or family history of medullary thyroid carcinoma
+6. Pregnancy or breastfeeding
+7. Use of insulin within 3 months prior to screening
+8. Known hypersensitivity to GLP-1 receptor agonists
+
+6. STUDY TREATMENTS
+
+6.1 Investigational Product
+- XR-7842 5mg subcutaneous injection, once weekly
+- XR-7842 10mg subcutaneous injection, once weekly
+
+6.2 Comparator
+Matching placebo subcutaneous injection, once weekly
+
+6.3 Treatment Duration
+52 weeks of active treatment
+
+7. SAFETY ASSESSMENTS
+
+7.1 Adverse Event Monitoring
+All adverse events will be collected from the time of informed consent until the end of the follow-up period. Adverse events will be coded using MedDRA.
+
+7.2 Laboratory Assessments
+- Hematology: Complete blood count with differential
+- Chemistry: Comprehensive metabolic panel, lipid panel
+- Urinalysis
+- Amylase and lipase (for pancreatitis monitoring)
+
+7.3 Vital Signs
+Blood pressure, heart rate, and weight will be measured at each visit.
+
+7.4 ECG Monitoring
+12-lead ECG at screening, baseline, and Weeks 12, 26, and 52
+
+8. STATISTICAL CONSIDERATIONS
+
+8.1 Sample Size Justification
+Based on Phase 2 data, a sample size of 400 subjects per group provides 90% power to detect a difference of 0.5% in HbA1c change from baseline between XR-7842 and placebo, assuming a common standard deviation of 1.2% and a two-sided significance level of 0.05.
+
+8.2 Analysis Populations
+- Intent-to-Treat (ITT): All randomized subjects
+- Per-Protocol (PP): All subjects who complete the study without major protocol deviations
+- Safety: All subjects who receive at least one dose of study drug
+
+9. ETHICAL CONSIDERATIONS
+
+9.1 Informed Consent
+Written informed consent must be obtained from all subjects prior to any study-related procedures. The consent process will follow ICH-GCP guidelines and local regulations.
+
+9.2 Institutional Review Board
+This study will be conducted in accordance with the protocol, ICH-GCP guidelines, and applicable regulatory requirements. The protocol must be approved by the IRB/EC before study initiation.
+
+10. DATA MANAGEMENT
+
+10.1 Electronic Data Capture
+All study data will be entered into an electronic data capture (EDC) system. Data will be reviewed for accuracy and completeness.
+
+10.2 Data Quality
+Query management and data cleaning will be performed throughout the study. Database lock will occur after all data has been entered, verified, and queries resolved.

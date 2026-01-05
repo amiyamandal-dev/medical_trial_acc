@@ -1,0 +1,156 @@
+CLINICAL TRIAL PROTOCOL
+Protocol Number: ONC-2024-002
+Version: 1.5
+Date: February 20, 2024
+
+TITLE: A Phase 2, Open-Label, Single-Arm Study to Evaluate the Efficacy and Safety of Immunotherapy Agent IMB-4521 in Patients with Advanced Non-Small Cell Lung Cancer (NSCLC)
+
+1. PROTOCOL SUMMARY
+
+1.1 Synopsis
+This Phase 2, open-label, single-arm study is designed to evaluate the efficacy and safety of IMB-4521, a novel PD-L1 inhibitor, in adult patients with advanced or metastatic non-small cell lung cancer (NSCLC) who have progressed after prior platinum-based chemotherapy.
+
+1.2 Study Duration
+- Screening Period: 4 weeks
+- Treatment Period: Until disease progression or unacceptable toxicity
+- Follow-up Period: 12 weeks after last dose
+- Maximum Treatment Duration: 24 months
+
+1.3 Number of Subjects
+Approximately 180 subjects will be enrolled.
+
+2. INTRODUCTION AND BACKGROUND
+
+2.1 Disease Background
+Non-small cell lung cancer (NSCLC) accounts for approximately 85% of all lung cancer cases. Despite advances in treatment, the prognosis for advanced NSCLC remains poor, with a 5-year survival rate of less than 20%.
+
+2.2 Study Drug Background
+IMB-4521 is a fully human monoclonal antibody that binds to PD-L1, blocking its interaction with PD-1 and restoring T-cell mediated anti-tumor immunity.
+
+3. STUDY OBJECTIVES AND ENDPOINTS
+
+3.1 Primary Objective
+To evaluate the objective response rate (ORR) of IMB-4521 in patients with advanced NSCLC.
+
+3.2 Secondary Objectives
+- To evaluate progression-free survival (PFS)
+- To evaluate overall survival (OS)
+- To evaluate duration of response (DOR)
+- To assess the safety and tolerability of IMB-4521
+- To evaluate PD-L1 expression as a predictive biomarker
+
+3.3 Primary Endpoint
+Objective Response Rate (ORR) per RECIST v1.1
+
+3.4 Secondary Endpoints
+- Progression-Free Survival (PFS)
+- Overall Survival (OS)
+- Duration of Response (DOR)
+- Disease Control Rate (DCR)
+- Incidence and severity of adverse events
+
+4. STUDY DESIGN
+
+4.1 Overall Design
+This is a multicenter, open-label, single-arm Phase 2 study.
+
+4.2 Treatment Schedule
+IMB-4521 will be administered as an intravenous infusion at a dose of 1200 mg every 3 weeks (Q3W).
+
+4.3 Response Assessment
+Tumor assessments will be performed using CT or MRI at baseline and every 6 weeks for the first 24 weeks, then every 9 weeks thereafter. Response will be assessed per RECIST v1.1.
+
+5. STUDY POPULATION
+
+5.1 Inclusion Criteria
+1. Age ≥18 years
+2. Histologically or cytologically confirmed NSCLC (squamous or non-squamous)
+3. Stage IIIB or IV disease not amenable to curative treatment
+4. Documented disease progression after at least one prior platinum-based chemotherapy regimen
+5. Measurable disease per RECIST v1.1
+6. ECOG Performance Status 0-1
+7. Adequate organ function:
+   - ANC ≥1.5 x 10⁹/L
+   - Platelets ≥100 x 10⁹/L
+   - Hemoglobin ≥9 g/dL
+   - Creatinine ≤1.5 x ULN
+   - AST/ALT ≤3 x ULN (≤5 x ULN if liver metastases)
+   - Total bilirubin ≤1.5 x ULN
+8. Life expectancy ≥12 weeks
+9. Willing and able to provide informed consent
+
+5.2 Exclusion Criteria
+1. Prior treatment with anti-PD-1, anti-PD-L1, or anti-CTLA-4 therapy
+2. Active autoimmune disease requiring systemic treatment
+3. History of interstitial lung disease or pneumonitis requiring steroids
+4. Active infection requiring systemic therapy
+5. Known active CNS metastases (stable, treated brain metastases allowed)
+6. Immunosuppressive therapy within 14 days prior to first dose
+7. Live vaccine within 30 days prior to first dose
+8. Pregnancy or breastfeeding
+9. Known HIV, active hepatitis B or C
+
+6. STUDY TREATMENTS
+
+6.1 Investigational Product
+IMB-4521 1200 mg IV infusion over 60 minutes, every 3 weeks
+
+6.2 Dose Modifications
+Treatment may be delayed for up to 12 weeks for immune-related adverse events. Dose reductions are not permitted; subjects requiring dose modification will discontinue treatment.
+
+6.3 Treatment Duration
+Treatment will continue until:
+- Disease progression
+- Unacceptable toxicity
+- Subject withdrawal
+- Investigator decision
+- Maximum of 24 months
+
+7. SAFETY ASSESSMENTS
+
+7.1 Adverse Event Monitoring
+Adverse events will be graded using NCI CTCAE v5.0. Special attention will be given to immune-related adverse events (irAEs).
+
+7.2 Immune-Related Adverse Events
+Specific monitoring and management guidelines are provided for:
+- Immune-related pneumonitis
+- Immune-related hepatitis
+- Immune-related colitis
+- Immune-related endocrinopathies
+- Immune-related nephritis
+- Immune-related skin reactions
+
+7.3 Laboratory Assessments
+- Hematology: Weekly for first 4 cycles, then every 3 weeks
+- Chemistry: Every 3 weeks
+- Thyroid function: Every 6 weeks
+- Urinalysis: Every 6 weeks
+
+8. BIOMARKER ASSESSMENTS
+
+8.1 PD-L1 Expression
+PD-L1 expression will be assessed on archived or fresh tumor tissue using the validated immunohistochemistry (IHC) assay.
+
+8.2 Tumor Mutational Burden
+TMB will be assessed using next-generation sequencing where tissue is available.
+
+9. STATISTICAL CONSIDERATIONS
+
+9.1 Sample Size Justification
+With 180 subjects, the study has 90% power to detect an ORR of 30% compared to a null hypothesis of 20%, using a one-sided exact binomial test at alpha=0.025.
+
+9.2 Analysis Populations
+- Intent-to-Treat (ITT): All enrolled subjects who receive at least one dose
+- Efficacy-Evaluable: Subjects with at least one post-baseline tumor assessment
+- Safety: All subjects who receive at least one dose
+
+10. ETHICAL CONSIDERATIONS
+
+10.1 Informed Consent
+Written informed consent must be obtained before any study-specific procedures. Subjects must have the opportunity to ask questions and must sign the consent form voluntarily.
+
+10.2 Data Safety Monitoring Board
+An independent DSMB will review safety data at regular intervals and make recommendations regarding study continuation.
+
+10.3 Independent Radiology Review
+An independent central radiology review will be conducted to confirm response assessments.

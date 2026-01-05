@@ -1,0 +1,155 @@
+CLINICAL TRIAL PROTOCOL
+Protocol Number: CVD-2024-003
+Version: 3.0
+Date: March 10, 2024
+
+TITLE: A Phase 3, Randomized, Double-Blind, Active-Controlled Study to Evaluate the Efficacy and Safety of Novel Anticoagulant NVX-2090 Compared to Warfarin in Patients with Non-Valvular Atrial Fibrillation
+
+1. PROTOCOL SUMMARY
+
+1.1 Synopsis
+This Phase 3 study evaluates the efficacy and safety of NVX-2090, a novel direct oral anticoagulant (DOAC), compared to dose-adjusted warfarin in patients with non-valvular atrial fibrillation (NVAF) for stroke prevention.
+
+1.2 Study Duration
+- Screening Period: 2 weeks
+- Treatment Period: 24 months
+- Follow-up Period: 30 days after last dose
+- Event-driven design with minimum follow-up of 12 months
+
+1.3 Number of Subjects
+Approximately 18,000 subjects will be randomized in a 1:1 ratio.
+
+2. INTRODUCTION AND BACKGROUND
+
+2.1 Disease Background
+Atrial fibrillation (AF) affects approximately 33 million individuals worldwide and is associated with a 5-fold increased risk of stroke. Anticoagulation therapy significantly reduces stroke risk but requires careful balance of efficacy and bleeding risk.
+
+2.2 Study Rationale
+NVX-2090 is a novel Factor Xa inhibitor with once-daily dosing and predictable pharmacokinetics. Phase 2 studies demonstrated favorable efficacy and safety profiles.
+
+3. STUDY OBJECTIVES AND ENDPOINTS
+
+3.1 Primary Objective
+To demonstrate non-inferiority of NVX-2090 to warfarin in preventing stroke or systemic embolism in patients with NVAF.
+
+3.2 Key Secondary Objective
+To evaluate the superiority of NVX-2090 over warfarin for major bleeding events.
+
+3.3 Primary Endpoint
+Time to first occurrence of stroke (ischemic or hemorrhagic) or systemic embolism
+
+3.4 Key Secondary Endpoints
+- Major bleeding (ISTH criteria)
+- All-cause mortality
+- Cardiovascular mortality
+- Myocardial infarction
+- Net clinical benefit (composite of stroke, systemic embolism, major bleeding, and death)
+
+4. STUDY DESIGN
+
+4.1 Overall Design
+This is a multicenter, randomized, double-blind, double-dummy, active-controlled, parallel-group study.
+
+4.2 Randomization
+Central randomization using IWRS with stratification by:
+- Geographic region
+- Prior vitamin K antagonist (VKA) use
+- CHADS2 score (≤2 vs >2)
+
+4.3 Blinding
+Double-dummy design: All subjects receive active study drug and matching placebo.
+
+5. STUDY POPULATION
+
+5.1 Inclusion Criteria
+1. Age ≥18 years
+2. Documented non-valvular atrial fibrillation or flutter
+3. CHADS2 score ≥1 or CHA2DS2-VASc score ≥2
+4. Eligible for anticoagulation therapy
+5. Able to provide written informed consent
+
+5.2 Exclusion Criteria
+1. Mechanical heart valve or moderate-severe mitral stenosis
+2. Stroke within 14 days or severe stroke within 3 months
+3. Conditions requiring anticoagulation other than AF
+4. Active bleeding or high bleeding risk
+5. Severe renal impairment (CrCl <15 mL/min)
+6. Severe hepatic impairment (Child-Pugh C)
+7. Concomitant use of strong P-gp and CYP3A4 inhibitors
+8. Pregnancy or breastfeeding
+9. Life expectancy <1 year
+
+6. STUDY TREATMENTS
+
+6.1 Investigational Product
+NVX-2090 20 mg once daily (15 mg for CrCl 15-50 mL/min)
+
+6.2 Active Comparator
+Dose-adjusted warfarin (target INR 2.0-3.0)
+
+6.3 Dose Modifications
+- Renal dose adjustment for CrCl 15-50 mL/min
+- Treatment interruption for invasive procedures
+- INR-guided dosing for warfarin arm
+
+7. SAFETY ASSESSMENTS
+
+7.1 Bleeding Events
+All bleeding events will be assessed and classified according to ISTH criteria:
+- Major bleeding
+- Clinically relevant non-major bleeding
+- Minor bleeding
+
+7.2 Hepatic Safety Monitoring
+- Liver function tests at baseline, monthly for 3 months, then quarterly
+- Hy's Law cases will be evaluated by hepatic safety committee
+
+7.3 Cardiovascular Event Adjudication
+An independent Clinical Events Committee (CEC) will adjudicate all suspected endpoint events.
+
+7.4 Laboratory Monitoring
+- Coagulation parameters
+- Renal function
+- Complete blood count
+- Liver function tests
+
+8. STATISTICAL CONSIDERATIONS
+
+8.1 Sample Size
+Event-driven design requiring approximately 396 primary endpoint events. Assuming 18,000 subjects with 2-year follow-up provides 90% power for non-inferiority (margin 1.38 HR).
+
+8.2 Primary Analysis
+Cox proportional hazards model with treatment as fixed effect and stratification factors as covariates. Non-inferiority requires upper 95% CI for HR <1.38.
+
+8.3 Hierarchical Testing
+If non-inferiority is demonstrated, superiority testing will be performed for major bleeding, followed by stroke/SE superiority.
+
+9. INTERIM ANALYSES
+
+9.1 Data Safety Monitoring Board
+An independent DSMB will conduct regular safety reviews. The DSMB may recommend study modifications or early termination based on safety or overwhelming efficacy.
+
+9.2 Pre-specified Interim Analysis
+One interim efficacy analysis at 50% of primary events using O'Brien-Fleming spending function.
+
+10. ETHICAL CONSIDERATIONS
+
+10.1 Informed Consent
+Comprehensive informed consent including discussion of anticoagulation risks and benefits.
+
+10.2 Regulatory Compliance
+Study conducted in accordance with ICH-GCP, Declaration of Helsinki, and applicable regulatory requirements.
+
+10.3 Subject Withdrawal
+Subjects may withdraw at any time. Procedures for safe transition to standard anticoagulation will be provided.
+
+11. SUBSTUDIES
+
+11.1 Pharmacokinetic Substudy
+Approximately 500 subjects for population PK analysis
+
+11.2 Quality of Life Substudy
+Assessment using AF-specific quality of life instruments (AFEQT, EQ-5D)
+
+11.3 Renal Function Substudy
+Detailed evaluation of renal outcomes in subjects with baseline renal impairment

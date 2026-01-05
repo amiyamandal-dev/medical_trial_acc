@@ -1,0 +1,102 @@
+CLINICAL TRIAL REQUIREMENTS DOCUMENT
+Study Reference: Oncology Immunotherapy Study
+Document Version: 1.0
+Date: April 2024
+
+REQUIREMENTS FOR PHASE 2 ONCOLOGY IMMUNOTHERAPY TRIAL
+
+This document outlines the mandatory requirements for conducting a Phase 2 immunotherapy clinical trial in advanced solid tumors.
+
+1. STUDY DESIGN REQUIREMENTS
+
+1.1 Response assessment must use RECIST v1.1 criteria.
+
+1.2 Tumor assessments must be performed every 6-9 weeks.
+
+1.3 Independent radiological review must be conducted for response confirmation.
+
+1.4 Treatment must continue until disease progression or unacceptable toxicity.
+
+2. PATIENT POPULATION REQUIREMENTS
+
+2.1 Patients must have histologically or cytologically confirmed cancer.
+
+2.2 ECOG Performance Status must be 0-1.
+
+2.3 Patients must have measurable disease per RECIST v1.1.
+
+2.4 Adequate organ function must be confirmed before enrollment.
+
+2.5 Patients with active autoimmune disease requiring systemic treatment must be excluded.
+
+2.6 Prior immunotherapy with checkpoint inhibitors must be an exclusion criterion.
+
+2.7 Patients must have life expectancy of at least 12 weeks.
+
+3. EFFICACY ENDPOINTS REQUIREMENTS
+
+3.1 Primary endpoint must be Objective Response Rate (ORR).
+
+3.2 Progression-Free Survival (PFS) must be a secondary endpoint.
+
+3.3 Overall Survival (OS) must be assessed.
+
+3.4 Duration of Response (DOR) must be calculated for responders.
+
+3.5 Disease Control Rate (DCR) should be evaluated.
+
+4. SAFETY MONITORING REQUIREMENTS
+
+4.1 Adverse events must be graded using NCI CTCAE version 5.0.
+
+4.2 Immune-related adverse events (irAEs) require special monitoring.
+
+4.3 Specific management guidelines for pneumonitis must be provided.
+
+4.4 Hepatic function must be monitored for immune-related hepatitis.
+
+4.5 Thyroid function tests must be performed regularly.
+
+4.6 Endocrinopathy monitoring including adrenal and pituitary function.
+
+5. BIOMARKER REQUIREMENTS
+
+5.1 PD-L1 expression must be assessed using validated IHC assay.
+
+5.2 Tumor mutational burden (TMB) analysis should be performed where feasible.
+
+5.3 Archival or fresh tumor tissue must be collected.
+
+6. TREATMENT REQUIREMENTS
+
+6.1 Dose modifications guidelines must be clearly defined.
+
+6.2 Treatment interruption protocols for irAEs must be specified.
+
+6.3 Maximum treatment duration should be defined (typically 24 months).
+
+6.4 Infusion reaction management protocols must be in place.
+
+7. SAFETY OVERSIGHT REQUIREMENTS
+
+7.1 Data Safety Monitoring Board (DSMB) must review safety data.
+
+7.2 Regular safety reviews must be conducted.
+
+7.3 Stopping rules for safety must be pre-specified.
+
+8. INFORMED CONSENT REQUIREMENTS
+
+8.1 Consent must include discussion of immunotherapy-specific risks.
+
+8.2 Information about irAEs must be clearly communicated.
+
+8.3 Patients must understand treatment duration and assessment schedule.
+
+9. STATISTICAL REQUIREMENTS
+
+9.1 Simon's two-stage design or similar may be used for Phase 2.
+
+9.2 Confidence intervals for ORR must be provided.
+
+9.3 Subgroup analyses by PD-L1 status should be planned.

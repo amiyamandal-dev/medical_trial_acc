@@ -1,0 +1,23 @@
+[project]
+name = "medical-trial-acc"
+version = "0.3.0"
+description = "Clinical Trial Protocol Matcher - Match requirements to protocols with intelligent analysis"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "chromadb>=0.4.22",
+    "pypdf>=4.0.0",
+    "rich>=13.7.0",
+    "sentence-transformers>=2.3.0",
+    "langchain-text-splitters>=1.1.0",
+    "langchain>=0.1.0",
+    "langchain-openai>=0.0.5",
+    "langchain-core>=0.1.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]

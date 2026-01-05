@@ -1,0 +1,88 @@
+CLINICAL TRIAL REQUIREMENTS DOCUMENT
+Study Reference: Diabetes Therapeutic Study
+Document Version: 1.0
+Date: April 2024
+
+REQUIREMENTS FOR PHASE 3 DIABETES CLINICAL TRIAL
+
+This document outlines the key requirements that must be followed for the conduct of a Phase 3 clinical trial in Type 2 Diabetes Mellitus.
+
+1. STUDY DESIGN REQUIREMENTS
+
+1.1 The study must be randomized and double-blind to minimize bias.
+
+1.2 A placebo control arm must be included for efficacy comparison.
+
+1.3 The study duration must be at least 52 weeks to assess long-term glycemic control.
+
+1.4 Stratified randomization should be used based on baseline HbA1c levels.
+
+2. PATIENT POPULATION REQUIREMENTS
+
+2.1 Patients must have confirmed Type 2 Diabetes Mellitus diagnosis for at least 6 months.
+
+2.2 Baseline HbA1c must be between 7.0% and 10.5% inclusive.
+
+2.3 Patients must be on stable metformin therapy (minimum 1500 mg/day) for at least 8 weeks.
+
+2.4 BMI should be between 25 and 45 kg/m².
+
+2.5 Patients with Type 1 diabetes must be excluded.
+
+2.6 Patients with history of pancreatitis must be excluded for GLP-1 agonist studies.
+
+2.7 Pregnant or breastfeeding women must be excluded.
+
+3. EFFICACY ENDPOINTS REQUIREMENTS
+
+3.1 Primary endpoint must be change in HbA1c from baseline.
+
+3.2 Secondary endpoints should include fasting plasma glucose changes.
+
+3.3 Proportion of patients achieving HbA1c target of <7% must be assessed.
+
+3.4 Body weight changes must be monitored as a secondary endpoint.
+
+4. SAFETY MONITORING REQUIREMENTS
+
+4.1 All adverse events must be collected and coded using MedDRA.
+
+4.2 Pancreatic enzymes (amylase and lipase) must be monitored regularly.
+
+4.3 12-lead ECG must be performed at baseline and key timepoints.
+
+4.4 Vital signs including blood pressure and heart rate must be recorded at each visit.
+
+4.5 Laboratory assessments must include complete blood count and comprehensive metabolic panel.
+
+5. INFORMED CONSENT REQUIREMENTS
+
+5.1 Written informed consent must be obtained before any study procedures.
+
+5.2 Consent process must follow ICH-GCP guidelines.
+
+5.3 Patients must have adequate time to consider participation.
+
+6. DATA MANAGEMENT REQUIREMENTS
+
+6.1 Electronic Data Capture (EDC) system must be used.
+
+6.2 Query management must be implemented for data quality.
+
+6.3 Database lock procedures must be defined.
+
+7. STATISTICAL REQUIREMENTS
+
+7.1 Intent-to-treat analysis must be the primary analysis population.
+
+7.2 Per-protocol analysis should be conducted as sensitivity analysis.
+
+7.3 Sample size must provide at least 90% power for primary endpoint.
+
+8. REGULATORY REQUIREMENTS
+
+8.1 IRB/EC approval must be obtained before study initiation.
+
+8.2 Study must comply with applicable regulatory requirements.
+
+8.3 All protocol amendments must be approved before implementation.
