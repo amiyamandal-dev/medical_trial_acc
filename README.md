@@ -1,15 +1,21 @@
 # Clinical Trial Protocol Matcher
 
-A powerful CLI tool that matches requirements documents to clinical trial protocol documents using **vector similarity** or **intelligent LLM-based analysis powered by LangChain**.
+A powerful tool that matches requirements documents to clinical trial protocol documents using **vector similarity** or **intelligent LLM-based analysis powered by LangChain**.
+
+Available in two interfaces:
+- 🌐 **Web Interface** (Streamlit) - Interactive, visual, user-friendly
+- 💻 **CLI** - Fast, scriptable, automation-ready
 
 ## Features
 
+- **🌐 Web Interface & CLI**: Choose your preferred interface
 - **🚀 Two Modes**: Fast vector similarity OR intelligent LLM analysis
 - **🧠 LangChain Integration**: Structured LLM chains for requirement extraction and analysis
 - **📊 Detailed Compliance Reports**: Status, confidence scores, and explanations for each requirement
+- **📈 Visual Analytics**: Interactive charts and gauges (Web interface)
 - **📁 Smart Matching**: Single file or automatic best-match from folder
 - **📄 Multiple Formats**: Supports PDF, TXT, and Markdown files
-- **🎨 Beautiful CLI**: Rich terminal UI with progress tracking and colored output
+- **🎨 Beautiful UI**: Rich terminal UI (CLI) and modern web interface (Streamlit)
 
 ## Installation
 
@@ -33,6 +39,36 @@ DEEPSEEK_MODEL=deepseek-reasoner             # Optional
 ```
 
 ## Quick Start
+
+### Option 1: Web Interface (Recommended for New Users)
+
+```bash
+# Install dependencies
+uv sync
+
+# Run the Streamlit app
+streamlit run app.py
+# Or use the quick start script
+bash run_streamlit.sh
+```
+
+Then open your browser to **http://localhost:8501** and:
+
+1. ✅ Choose your analysis mode (Similarity or Intelligent)
+2. 📁 Upload protocol and requirements documents
+3. 🚀 Click "Start Analysis"
+4. 📊 View interactive results with charts and visualizations
+5. 📥 Download markdown reports
+
+**Web Interface Features:**
+- Drag-and-drop file upload
+- Interactive compliance gauge and pie charts
+- Real-time progress tracking
+- Expandable detailed results
+- One-click report download
+- No command-line knowledge needed
+
+### Option 2: Command Line Interface
 
 ### Basic Mode (No API Key Required)
 
@@ -252,6 +288,8 @@ LangChain LLM Extraction              Vector Search (ChromaDB)
 
 ```
 medical-trial-acc/
+├── app.py                   # Streamlit web interface (NEW!)
+├── run_streamlit.sh         # Quick start script for web UI
 ├── main.py                  # CLI entry point with arg parsing
 ├── src/
 │   ├── agent.py             # LangChain agent (chains, prompts, Pydantic)
@@ -460,6 +498,9 @@ self.analyze_requirement_prompt = ChatPromptTemplate.from_messages([
 ## Dependencies
 
 Key dependencies managed by `uv`:
+- `streamlit` - Modern web interface framework
+- `plotly` - Interactive charts and visualizations
+- `pandas` - Data manipulation for tables
 - `langchain` - LLM orchestration framework
 - `langchain-openai` - OpenAI/DeepSeek integration
 - `langchain-text-splitters` - Document chunking

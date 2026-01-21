@@ -50,7 +50,7 @@ class ClinicalTrialAgent:
             api_key=llm_config["api_key"],
             base_url=llm_config["base_url"],
             model=llm_config["model"],
-            temperature=0.1,
+            temperature=0.0,
             max_tokens=500,
         )
 
