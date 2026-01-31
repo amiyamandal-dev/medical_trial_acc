@@ -1,0 +1,16 @@
+total input
+1. protocol file = x
+2. requirement file = y
+3. list of KPI
+
+pseudo code
+1. API 1 will upload x file
+2. API 2 will give status list of x files
+
+3. API 3 will take input :- file y + id of file x + list of KPI -> job ID
+    All background jobs
+    3.1 KPI will be used to extract condition from file x which actually cover it and give a good understanding of it KIP with respect to X using COT
+    3.2 then this condition will be used to pull information from file Y if those condition are followed or not with all the details
+    3.3 pulled text will be shared with judgeLLM if conditions is followed or not
+ 4. API 4 (input job id) will be polling API to check if job is done or not
+ 5. API 5 (input job id) will return json result
