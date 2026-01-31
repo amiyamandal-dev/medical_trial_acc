@@ -9,8 +9,18 @@ import streamlit as st
 
 
 API_URL = "http://localhost:8000"
-PWC_ORANGE = "#D04A02"
-PWC_DARK = "#2D2D2D"
+__ORANGE = "#D04A02"
+__DARK = "#2D2D2D"
+
+# Default KPIs for analysis
+DEFAULT_KPIS = [
+    "STRATIFICATION FACTORS",
+    "RANDOMIZATION VISIT",
+    "INCLUSION CRITERIA",
+    "EXCLUSION CRITERIA",
+    "DOSING SCHEDULE",
+    "VISIT SCHEDULE",
+]
 
 
 def api_get(endpoint: str, timeout: int = 5) -> Optional[dict]:
@@ -87,19 +97,19 @@ def generate_report(data: dict) -> Optional[str]:
 
 def setup_page():
     """Configure page and styling"""
-    st.set_page_config(page_title="PwC Compliance Analyzer", page_icon="📊", layout="wide")
+    st.set_page_config(page_title="_ Compliance Analyzer", page_icon="📊", layout="wide")
 
     st.markdown(f"""
     <style>
         .main .block-container {{ max-width: 1000px; padding-top: 1rem; }}
-        .header {{ background: {PWC_DARK}; padding: 1rem 1.5rem; border-radius: 10px;
+        .header {{ background: {__DARK}; padding: 1rem 1.5rem; border-radius: 10px;
                    margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; }}
-        .logo {{ color: {PWC_ORANGE}; font-size: 2rem; font-weight: bold; }}
+        .logo {{ color: {__ORANGE}; font-size: 2rem; font-weight: bold; }}
         .title {{ color: white; font-size: 1.3rem; }}
         .card {{ background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.5rem; margin: 0.5rem 0; }}
         .step {{ display: flex; align-items: center; gap: 10px; background: #f9fafb;
                  padding: 0.8rem; border-radius: 8px; margin: 0.5rem 0; }}
-        .step-num {{ background: {PWC_ORANGE}; color: white; width: 28px; height: 28px;
+        .step-num {{ background: {__ORANGE}; color: white; width: 28px; height: 28px;
                      border-radius: 50%; display: flex; align-items: center; justify-content: center;
                      font-weight: bold; font-size: 0.85rem; }}
         .badge {{ display: inline-block; padding: 0.2rem 0.6rem; border-radius: 12px;
@@ -107,14 +117,14 @@ def setup_page():
         .badge-ok {{ background: #d1fae5; color: #065f46; }}
         .badge-warn {{ background: #fef3c7; color: #92400e; }}
         .badge-err {{ background: #fee2e2; color: #991b1b; }}
-        .kpi {{ display: inline-block; background: {PWC_ORANGE}; color: white;
+        .kpi {{ display: inline-block; background: {__ORANGE}; color: white;
                 padding: 0.2rem 0.5rem; border-radius: 10px; margin: 2px; font-size: 0.8rem; }}
-        .stButton > button {{ background: {PWC_ORANGE}; color: white; border: none; border-radius: 6px; }}
+        .stButton > button {{ background: {__ORANGE}; color: white; border: none; border-radius: 6px; }}
         .stButton > button:hover {{ background: #b03d00; }}
         #MainMenu, footer {{ visibility: hidden; }}
     </style>
     <div class="header">
-        <div class="logo">pwc</div>
+        <div class="logo">_</div>
         <div class="title">Clinical Trial Compliance Analyzer</div>
     </div>
     """, unsafe_allow_html=True)
@@ -233,10 +243,11 @@ def page_analyze():
 
     # Step 3: Enter KPIs
     st.markdown('<div class="step"><div class="step-num">3</div><b>Enter KPIs</b></div>', unsafe_allow_html=True)
+    st.caption("Default KPIs are pre-filled. Add more or modify as needed (one per line):")
     kpi_text = st.text_area(
         "KPIs",
-        placeholder="One KPI per line:\nPatient enrollment\nAdverse events\nData quality",
-        height=100,
+        value="\n".join(DEFAULT_KPIS),
+        height=150,
         label_visibility="collapsed"
     )
     kpis = [k.strip() for k in kpi_text.split("\n") if k.strip()]
