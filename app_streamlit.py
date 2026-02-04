@@ -648,7 +648,9 @@ def setup_page():
     if "requirements_file" not in st.session_state:
         st.session_state.requirements_file = None
     if "selected_kpis" not in st.session_state:
-        st.session_state.selected_kpis = []
+        st.session_state.selected_kpis = ["STRATIFICATION FACTORS"] # Default selection
+    if "custom_kpis" not in st.session_state:
+        st.session_state.custom_kpis = []
     if "results" not in st.session_state:
         st.session_state.results = None
     if "job_id" not in st.session_state:
@@ -666,12 +668,15 @@ def setup_page():
 def render_sidebar():
     """Render the sidebar with app info"""
     with st.sidebar:
-        # PwC Branding section
+        # PwC Logo section
         st.markdown(f"""
         <div style="text-align: center; padding: 1rem 0 1.5rem 0; border-bottom: 2px solid {COLORS['border']};">
-            <div style="font-size: 2rem; font-weight: 700; color: {COLORS['primary']};">PwC</div>
-            <div style="font-size: 0.75rem; color: {COLORS['text_secondary']}; margin-top: 0.25rem;">Life Sciences & Healthcare</div>
-        </div>
+            <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M66.7 47.3001C64.2 47.7001 63 49.5001 63 52.7001C63 55.9001 64.7 58.1001 67.2 58.1001C69.7 58.1001 69.5 57.7001 71.8 56.6001V59.2001C69.1 60.5001 67.5 60.8001 65.2 60.8001C62.9 60.8001 61.1 60.2001 59.8 58.8001C58.4 57.4001 57.7 55.5001 57.7 53.5001C57.7 48.9001 61.1 45.8001 66.1 45.8001C71.1 45.8001 71.7 47.3001 71.7 49.5001C71.7 51.7001 70.6 51.9001 69.1 51.9001C67.6 51.9001 67.6 51.7001 66.8 51.2001V47.3001H66.7ZM54.6 53.4001C56.8 50.6001 57.6 49.5001 57.6 48.1001C57.6 46.7001 56.5 45.6001 55.1 45.6001C53.7 45.6001 53.4 46.0001 53 46.5001V52.2001L49.4 57.0001V46.0001H46L40.3 55.5001V46.0001H38.3L33.1 47.3001V48.6001L35.9 48.9001V60.5001H39.6L45.1 51.5001V60.5001H49.1L54.7 53.4001H54.6ZM22.2 49.0001C23 49.0001 23.5 48.8001 23.9 48.8001C26.3 48.8001 27.6 50.4001 27.6 53.4001C27.6 56.4001 26 58.8001 23.1 58.8001C20.2 58.8001 22.7 58.8001 22.3 58.8001V49.1001L22.2 49.0001ZM22.2 60.4001C23.1 60.4001 24.1 60.4001 24.6 60.4001C29.5 60.4001 32.6 57.3001 32.6 52.6001C32.6 47.9001 30.3 45.7001 27.1 45.7001C23.9 45.7001 24.8 46.0001 22.2 47.6001V45.7001H20.7L15 47.4001V48.8001H17.4V65.0001L15.3 65.5001V66.8001H24.6V65.5001L22.2 65.0001V60.3001V60.4001Z" fill="black"/>
+<path d="M64.1 41.8H48.6L51.2 37.4H66.7L64.1 41.8ZM84.9 33H69.4L66.8 37.4H82.3L84.9 33Z" fill="#FD5108"/>
+</svg>
+
+            
         """, unsafe_allow_html=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
@@ -715,11 +720,9 @@ def render_header():
     """Render the main content header"""
     st.markdown(f"""
     <div class="app-header">
-        <div style="display: flex; align-items: center; gap: 1.5rem;">
-            <div>
-                <div class="app-header-title">Clinical Trial Document Checker</div>
-                <div class="app-header-subtitle">Compare your protocol and requirements to find differences</div>
-            </div>
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <div class="app-header-title">Clinical Trial Document Checker</div>
+            <div class="app-header-subtitle">Compare your protocol and requirements to find differences</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -829,22 +832,41 @@ def section_upload_and_analyze():
     # Topic Selection
     st.markdown("#### Step 2: Pick Topics to Compare")
 
-    # Multi-select for KPIs
-    all_kpis = DEFAULT_KPIS + COMMON_KPIS
-    selected_kpis = st.multiselect(
-        "Select which topics to check",
-        options=all_kpis,
-        default=st.session_state.selected_kpis if st.session_state.selected_kpis else ["STRATIFICATION FACTORS"],
-        key="kpi_multiselect",
-        label_visibility="collapsed",
-        help="Choose one or more topics. The AI will compare these sections between your documents."
-    )
-    st.session_state.selected_kpis = selected_kpis
+    # Callback for adding custom KPI
+    def add_custom_kpi():
+        new_val = st.session_state.new_kpi_input.strip().upper()
+        if new_val:
+            if "custom_kpis" not in st.session_state:
+                st.session_state.custom_kpis = []
+            if new_val not in st.session_state.custom_kpis:
+                st.session_state.custom_kpis.append(new_val)
+            
+            # Add to selected list
+            if "selected_kpis" not in st.session_state:
+                st.session_state.selected_kpis = []
+            if new_val not in st.session_state.selected_kpis:
+                st.session_state.selected_kpis.append(new_val)
+        
+        st.session_state.new_kpi_input = "" # Clear input
 
-    # Show selected KPIs as tags
-    if selected_kpis:
-        kpi_tags = "".join([f'<span class="kpi-tag">{k}</span>' for k in selected_kpis])
-        st.markdown(kpi_tags, unsafe_allow_html=True)
+    # Combine all options
+    all_options = sorted(list(set(DEFAULT_KPIS + COMMON_KPIS + st.session_state.get("custom_kpis", []))))
+    
+    # Multiselect widget for "Dropdown List" behavior
+    st.multiselect(
+        "Select topics",
+        options=all_options,
+        key="selected_kpis",  # Bind directly to session state
+        help="Choose from the list or add your own topics below."
+    )
+    
+    # Input for custom topics ("Add custom input")
+    st.text_input(
+        "Add a custom topic",
+        placeholder="Type a new topic and press Enter",
+        key="new_kpi_input",
+        on_change=add_custom_kpi
+    )
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -866,6 +888,7 @@ def section_upload_and_analyze():
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Compare Button
+    selected_kpis = st.session_state.selected_kpis
     protocol_ready = st.session_state.protocol_id is not None
     requirements_ready = st.session_state.requirements_file is not None
     kpis_ready = len(selected_kpis) > 0
@@ -1123,12 +1146,10 @@ def section_detailed_analysis(detailed_results: List[dict]):
             if conditions:
                 for i, condition in enumerate(conditions):
                     src = sources[i] if i < len(sources) else ""
-                    st.markdown(f"""
-                    <div style="background: #f8f9fa; border-left: 3px solid {COLORS['primary']}; padding: 0.75rem 1rem; margin: 0.5rem 0;">
-                        <div style="color: #333;">{condition}</div>
-                        {f'<div style="color: #888; font-size: 0.8rem; margin-top: 0.25rem;">Source: {src}</div>' if src else ''}
-                    </div>
-                    """, unsafe_allow_html=True)
+                    st.markdown(f"**Condition {i+1}:** {condition}")
+                    if src:
+                        st.caption(f"Source: {src}")
+                    st.markdown("")
             else:
                 st.info("No specific requirements found in protocol for this topic.")
 
@@ -1137,31 +1158,26 @@ def section_detailed_analysis(detailed_results: List[dict]):
             st.markdown("##### Evidence from Requirements Document")
 
             if s2:
-                for check in s2:
+                for idx, check in enumerate(s2, 1):
                     coverage = check.get("coverage_level", "none")
                     condition_text = check.get("condition", "")
                     evidence = check.get("evidence_quote", "")
                     gap = check.get("gap_description", "")
 
-                    # Color coding based on coverage
+                    # Status label
                     if coverage == "full":
-                        border_color = COLORS['success']
-                        label = "FOUND"
+                        st.success(f"**[FOUND]** {condition_text}")
                     elif coverage == "partial":
-                        border_color = COLORS['warning']
-                        label = "PARTIAL"
+                        st.warning(f"**[PARTIAL]** {condition_text}")
                     else:
-                        border_color = COLORS['danger']
-                        label = "NOT FOUND"
-
-                    st.markdown(f"""
-                    <div style="border: 1px solid {border_color}; border-left: 4px solid {border_color}; padding: 0.75rem 1rem; margin: 0.5rem 0; border-radius: 4px;">
-                        <div style="font-weight: 600; color: {border_color}; font-size: 0.75rem; margin-bottom: 0.25rem;">{label}</div>
-                        <div style="color: #333; margin-bottom: 0.5rem;">{condition_text}</div>
-                        {f'<div style="background: #f0f0f0; padding: 0.5rem; border-radius: 4px; font-style: italic; color: #555;">"{evidence}"</div>' if evidence else ''}
-                        {f'<div style="color: {COLORS["danger"]}; margin-top: 0.5rem; font-size: 0.9rem;">Gap: {gap}</div>' if gap and coverage != "full" else ''}
-                    </div>
-                    """, unsafe_allow_html=True)
+                        st.error(f"**[NOT FOUND]** {condition_text}")
+                    
+                    if evidence:
+                        st.caption(f"Evidence: {evidence}")
+                    if gap and coverage != "full":
+                        st.caption(f"Gap: {gap}")
+                    
+                    st.markdown("")
             else:
                 st.info("No evidence checks available.")
 
@@ -1176,12 +1192,7 @@ def section_detailed_analysis(detailed_results: List[dict]):
                 st.markdown(reasoning)
 
             if gaps and status != "followed":
-                st.markdown(f"""
-                <div style="background: #fff3cd; border-left: 4px solid {COLORS['warning']}; padding: 0.75rem 1rem; margin-top: 0.5rem;">
-                    <div style="font-weight: 600; color: #856404; margin-bottom: 0.25rem;">Action Required</div>
-                    <div style="color: #856404;">{gaps}</div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.warning(f"**Action Required:** {gaps}")
             elif status == "followed":
                 st.success("No action needed - documents are aligned.")
 
