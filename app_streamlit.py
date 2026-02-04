@@ -25,9 +25,6 @@ API_URL = "http://localhost:8000"
 HISTORY_DB_PATH = "data/analysis_history.db"
 
 
-# =============================================================================
-# HISTORY DATABASE
-# =============================================================================
 
 def init_history_db():
     """Initialize the SQLite database for storing analysis history"""
@@ -125,9 +122,6 @@ def delete_history_record(record_id: int) -> bool:
     return deleted
 
 
-# =============================================================================
-# OPTIMIZED HTTP CLIENT WITH CONNECTION POOLING
-# =============================================================================
 
 @st.cache_resource
 def get_http_session() -> requests.Session:
@@ -1025,10 +1019,7 @@ def section_results():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ==========================================================================
-    # EXECUTIVE SUMMARY TABLE - Markdown format
-    # ==========================================================================
-    st.markdown("### Executive Summary")
+    st.markdown("### Summary")
 
     # Build markdown table
     table_lines = [
@@ -1104,9 +1095,6 @@ def section_results():
                 use_container_width=True
             )
 
-    # ==========================================================================
-    # DETAILED ANALYSIS SECTION - For reviewers who need full context
-    # ==========================================================================
     section_detailed_analysis(detailed_results)
 
 
@@ -1128,7 +1116,6 @@ def section_detailed_analysis(detailed_results: List[dict]):
             s2 = item.get("step_3_2_checks", [])
             s3 = item.get("step_3_3_judgement", {})
 
-            # ---------- PROTOCOL SECTION ----------
             st.markdown("##### What the Protocol Says")
             conditions = s1.get("conditions", [])
             sources = s1.get("source_sections", [])
@@ -1147,7 +1134,6 @@ def section_detailed_analysis(detailed_results: List[dict]):
 
             st.markdown("")
 
-            # ---------- EVIDENCE SECTION ----------
             st.markdown("##### Evidence from Requirements Document")
 
             if s2:
@@ -1198,139 +1184,6 @@ def section_detailed_analysis(detailed_results: List[dict]):
                 """, unsafe_allow_html=True)
             elif status == "followed":
                 st.success("No action needed - documents are aligned.")
-
-
-def mock_results_page():
-    """Mock page to preview results section layout"""
-    setup_page()
-
-    # Mock data with full annotations
-    mock_data = {
-        "summary": {
-            "total_requirements": 3,
-            "followed": 1,
-            "partial": 1,
-            "not_followed": 1,
-            "not_applicable": 0,
-            "errors": 0,
-            "compliance_rate": 50
-        },
-        "detailed_results": [
-            {
-                "kpi": "STRATIFICATION FACTORS",
-                "compliance_status": "partial",
-                "confidence_score": 0.85,
-                "step_3_1_conditions": {
-                    "conditions": [
-                        "Baseline HbA1c (<8.5% vs ≥8.5%)",
-                        "Background diabetes medication (metformin monotherapy vs combination therapy)"
-                    ],
-                    "source_sections": [
-                        "Section 4.2 - Randomization",
-                        "Section 4.2 - Randomization"
-                    ],
-                    "protocol_context": "The protocol requires stratification based on Baseline HbA1c (<8.5% vs ≥8.5%) and Background diabetes medication (metformin monotherapy vs combination therapy) during randomization."
-                },
-                "step_3_2_checks": [
-                    {
-                        "condition": "Baseline HbA1c (<8.5% vs ≥8.5%)",
-                        "coverage_level": "partial",
-                        "evidence_quote": "Patients will be stratified by HbA1c levels at baseline",
-                        "gap_description": "Specific threshold values (<8.5% vs ≥8.5%) not defined"
-                    },
-                    {
-                        "condition": "Background diabetes medication (metformin monotherapy vs combination therapy)",
-                        "coverage_level": "full",
-                        "evidence_quote": "Stratification by background medication: metformin monotherapy versus combination therapy with other oral agents"
-                    }
-                ],
-                "step_3_3_judgement": {
-                    "reasoning": "The requirements document addresses stratification factors but lacks specific HbA1c threshold values. The medication stratification is fully aligned.",
-                    "gaps_identified": "Requirements do not specify the exact HbA1c threshold (<8.5% vs ≥8.5%) for stratification.",
-                    "evidence_summary": "Stratification by background medication is fully covered, but HbA1c stratification lacks specific threshold values."
-                }
-            },
-            {
-                "kpi": "INCLUSION CRITERIA",
-                "compliance_status": "followed",
-                "confidence_score": 0.95,
-                "step_3_1_conditions": {
-                    "conditions": [
-                        "Age 18-75 years",
-                        "Diagnosed with Type 2 Diabetes for at least 6 months"
-                    ],
-                    "source_sections": [
-                        "Section 5.1 - Inclusion Criteria",
-                        "Section 5.1 - Inclusion Criteria"
-                    ],
-                    "protocol_context": "Participants must be 18-75 years old and diagnosed with Type 2 Diabetes for at least 6 months."
-                },
-                "step_3_2_checks": [
-                    {
-                        "condition": "Age 18-75 years",
-                        "coverage_level": "full",
-                        "evidence_quote": "Eligible participants must be between 18 and 75 years of age at the time of screening"
-                    },
-                    {
-                        "condition": "Diagnosed with Type 2 Diabetes for at least 6 months",
-                        "coverage_level": "full",
-                        "evidence_quote": "Confirmed diagnosis of Type 2 Diabetes Mellitus for a minimum of 6 months prior to enrollment"
-                    }
-                ],
-                "step_3_3_judgement": {
-                    "reasoning": "All inclusion criteria from the protocol are fully addressed in the requirements document with matching specifications.",
-                    "gaps_identified": "",
-                    "evidence_summary": "Full evidence found for age range (18-75) and diagnosis duration (>6 months)."
-                }
-            },
-            {
-                "kpi": "SAFETY MONITORING",
-                "compliance_status": "not_followed",
-                "confidence_score": 0.90,
-                "step_3_1_conditions": {
-                    "conditions": [
-                        "Monthly laboratory assessments",
-                        "Adverse event reporting within 24 hours",
-                        "Safety committee reviews quarterly"
-                    ],
-                    "source_sections": [
-                        "Section 7.3 - Safety Assessments",
-                        "Section 7.4 - Adverse Event Reporting",
-                        "Section 7.5 - Data Safety Monitoring"
-                    ],
-                    "protocol_context": "Protocol mandates monthly labs, 24-hour AE reporting, and quarterly safety committee reviews."
-                },
-                "step_3_2_checks": [
-                    {
-                        "condition": "Monthly laboratory assessments",
-                        "coverage_level": "none",
-                        "gap_description": "No specification for laboratory assessment frequency"
-                    },
-                    {
-                        "condition": "Adverse event reporting within 24 hours",
-                        "coverage_level": "partial",
-                        "evidence_quote": "Adverse events should be reported promptly",
-                        "gap_description": "24-hour timeline not explicitly stated"
-                    },
-                    {
-                        "condition": "Safety committee reviews quarterly",
-                        "coverage_level": "none",
-                        "gap_description": "No mention of safety committee or review schedule"
-                    }
-                ],
-                "step_3_3_judgement": {
-                    "reasoning": "Critical safety monitoring procedures are not adequately specified. The requirements lack specific timelines and do not address safety committee oversight.",
-                    "gaps_identified": "Missing: (1) Monthly lab assessment schedule, (2) 24-hour AE reporting timeline, (3) Safety committee review requirements.",
-                    "evidence_summary": "No evidence for monthly labs or safety committee. AE reporting is mentioned but lacks the 24h timeline."
-                }
-            }
-        ]
-    }
-    
-    st.session_state.results = mock_data
-    st.session_state.filter_status = "all"
-    
-    section_results()
 
 
 def section_history():
@@ -1494,8 +1347,4 @@ def main():
 
 
 if __name__ == "__main__":
-    import sys
-    if len(sys.argv) > 1 and sys.argv[1] == "--mock":
-        mock_results_page()
-    else:
-        main()
+    main()
