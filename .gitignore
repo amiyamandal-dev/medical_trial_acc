@@ -224,6 +224,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-data/chroma_db/
+data/lancedb/
 clinical_trials.dbreports/
 .idea/

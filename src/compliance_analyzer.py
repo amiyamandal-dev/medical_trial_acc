@@ -9,9 +9,8 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple, Callable
 
 # Third-party imports
-import chromadb
-from chromadb.config import Settings
-from chromadb.utils import embedding_functions
+import lancedb
+from openai import OpenAI
 from dotenv import load_dotenv
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_core.prompts import PromptTemplate
@@ -77,7 +76,7 @@ class Config:
     # Directories
     DATA_DIR = Path(__file__).parent.parent / "data"
     PROTOCOLS_DIR = DATA_DIR / "protocols"
-    CHROMA_DIR = DATA_DIR / "chroma_db"
+    LANCEDB_DIR = DATA_DIR / "lancedb"
 
     @classmethod
     def validate(cls) -> bool:
@@ -163,55 +162,65 @@ def load_document(file_path: Path) -> str:
 
 
 class VectorStore:
-    """ChromaDB vector store for document embeddings"""
+    """LanceDB vector store for document embeddings"""
+
+    _TABLE_NAME = "protocol_documents"
 
     def __init__(self):
-        Config.CHROMA_DIR.mkdir(parents=True, exist_ok=True)
+        Config.LANCEDB_DIR.mkdir(parents=True, exist_ok=True)
 
         embedding_config = Config.get_embedding_config()
-        self.embedding_fn = embedding_functions.OpenAIEmbeddingFunction(
-            api_key=embedding_config["api_key"],
-            model_name=embedding_config["model"]
-        )
+        self._openai_client = OpenAI(api_key=embedding_config["api_key"])
+        self._embedding_model = embedding_config["model"]
 
-        self.client = chromadb.PersistentClient(
-            path=str(Config.CHROMA_DIR),
-            settings=Settings(anonymized_telemetry=False)
-        )
-        self.collection = self.client.get_or_create_collection(
-            name="protocol_documents",
-            embedding_function=self.embedding_fn,
-            metadata={"hnsw:space": "cosine"}
-        )
+        self.db = lancedb.connect(str(Config.LANCEDB_DIR))
+        self.table = None
+
+        if self._TABLE_NAME in self.db.list_tables().tables:
+            self.table = self.db.open_table(self._TABLE_NAME)
+
+    def _get_embeddings(self, texts: List[str]) -> List[List[float]]:
+        """Get embeddings from OpenAI API in batches"""
+        all_embeddings: List[List[float]] = []
+        batch_size = 100
+        for i in range(0, len(texts), batch_size):
+            batch = texts[i : i + batch_size]
+            response = self._openai_client.embeddings.create(
+                input=batch,
+                model=self._embedding_model,
+            )
+            all_embeddings.extend([item.embedding for item in response.data])
+        return all_embeddings
 
     def add_document(self, doc_id: int, content: str, metadata: Optional[dict] = None) -> None:
         """Add a document with chunking (batch optimized)"""
         chunks = self._chunk_text(content)
 
-        # Prepare batch data
-        chunk_ids = []
-        chunk_docs = []
-        chunk_metas = []
-
-        for i, chunk in enumerate(chunks):
-            chunk_id = f"doc_{doc_id}_chunk_{i}"
-            chunk_metadata = {"doc_id": doc_id, "chunk_index": i, **(metadata or {})}
-            chunk_ids.append(chunk_id)
-            chunk_docs.append(chunk)
-            chunk_metas.append(chunk_metadata)
-
         # Delete existing chunks for this doc_id first (if any)
-        existing = self.collection.get(where={"doc_id": doc_id})
-        if existing["ids"]:
-            self.collection.delete(ids=existing["ids"])
+        self.delete_document(doc_id)
 
-        # Batch add all chunks at once (much faster than one-by-one)
-        if chunk_ids:
-            self.collection.add(
-                ids=chunk_ids,
-                documents=chunk_docs,
-                metadatas=chunk_metas
-            )
+        # Get embeddings for all chunks
+        embeddings = self._get_embeddings(chunks)
+
+        # Prepare data for LanceDB
+        data = []
+        for i, (chunk, embedding) in enumerate(zip(chunks, embeddings)):
+            data.append({
+                "id": f"doc_{doc_id}_chunk_{i}",
+                "text": chunk,
+                "doc_id": doc_id,
+                "chunk_index": i,
+                "name": metadata.get("name", "") if metadata else "",
+                "type": metadata.get("type", "") if metadata else "",
+                "file_path": metadata.get("file_path", "") if metadata else "",
+                "vector": embedding,
+            })
+
+        if data:
+            if self.table is None:
+                self.table = self.db.create_table(self._TABLE_NAME, data=data)
+            else:
+                self.table.add(data)
 
     def _chunk_text(self, text: str, chunk_size: int = 1500, overlap: int = 200) -> List[str]:
         """
@@ -310,32 +319,49 @@ class VectorStore:
 
     def search(self, query: str, n_results: int = 5, doc_id: Optional[int] = None) -> List[dict]:
         """Search for similar documents with caching"""
+        if self.table is None:
+            return []
+
         # Check cache first
         cache_key = f"search:{query[:100]}:{n_results}:{doc_id}"
         cached = _search_cache.get(cache_key)
         if cached:
             return cached
 
-        where_filter = {"doc_id": doc_id} if doc_id is not None else None
-        results = self.collection.query(query_texts=[query], n_results=n_results, where=where_filter)
+        # Get query embedding
+        query_embedding = self._get_embeddings([query])[0]
+
+        # Build search query with cosine distance
+        search_query = self.table.search(query_embedding, vector_column_name="vector").metric("cosine").limit(n_results)
+        if doc_id is not None:
+            search_query = search_query.where(f"doc_id = {doc_id}")
+
+        results = search_query.to_list()
 
         matches = []
-        if results["documents"] and results["documents"][0]:
-            for i, doc in enumerate(results["documents"][0]):
-                matches.append({
-                    "content": doc,
-                    "metadata": results["metadatas"][0][i] if results["metadatas"] else {},
-                    "distance": results["distances"][0][i] if results["distances"] else 0
-                })
+        for row in results:
+            matches.append({
+                "content": row.get("text", ""),
+                "metadata": {
+                    "doc_id": row.get("doc_id"),
+                    "chunk_index": row.get("chunk_index"),
+                    "name": row.get("name", ""),
+                    "type": row.get("type", ""),
+                    "file_path": row.get("file_path", ""),
+                },
+                "distance": row.get("_distance", 0),
+            })
 
         _search_cache.set(cache_key, matches)
         return matches
 
     def delete_document(self, doc_id: int) -> None:
         """Delete all chunks for a document"""
-        results = self.collection.get(where={"doc_id": doc_id})
-        if results["ids"]:
-            self.collection.delete(ids=results["ids"])
+        if self.table is not None:
+            try:
+                self.table.delete(f"doc_id = {doc_id}")
+            except Exception:
+                pass  # No rows to delete
 
 
 class KPIComplianceAgent:
@@ -990,6 +1016,8 @@ class ComplianceAnalyzer:
 
     def clear_vector_store(self):
         """Clear all data and caches"""
+        if self.vector_store.table is not None:
+            self.vector_store.db.drop_table(VectorStore._TABLE_NAME)
         self.vector_store = VectorStore()
         self.protocol_counter = 0
         self.content_hash_map.clear()

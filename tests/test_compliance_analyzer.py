@@ -26,9 +26,8 @@ class TestImports:
 
     def test_third_party_imports(self):
         """Test third-party package imports"""
-        import chromadb
-        from chromadb.config import Settings
-        from chromadb.utils import embedding_functions
+        import lancedb
+        from openai import OpenAI
         from dotenv import load_dotenv
         from langchain_core.output_parsers import StrOutputParser, PydanticOutputParser
         from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
