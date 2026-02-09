@@ -832,34 +832,33 @@ def section_upload_and_analyze():
     # Topic Selection
     st.markdown("#### Step 2: Pick Topics to Compare")
 
-    # Callback for adding custom KPI
+    # Callback for adding custom KPI — only touches custom_kpis + sets a flag
     def add_custom_kpi():
         new_val = st.session_state.new_kpi_input.strip().upper()
-        if new_val:
-            if "custom_kpis" not in st.session_state:
-                st.session_state.custom_kpis = []
-            if new_val not in st.session_state.custom_kpis:
-                st.session_state.custom_kpis.append(new_val)
-            
-            # Add to selected list
-            if "selected_kpis" not in st.session_state:
-                st.session_state.selected_kpis = []
-            if new_val not in st.session_state.selected_kpis:
-                st.session_state.selected_kpis.append(new_val)
-        
-        st.session_state.new_kpi_input = "" # Clear input
+        if new_val and new_val not in st.session_state.custom_kpis:
+            st.session_state.custom_kpis = st.session_state.custom_kpis + [new_val]
+            st.session_state._pending_kpi = new_val
+        st.session_state.new_kpi_input = ""
 
-    # Combine all options
+    # Combine all options (includes any custom KPIs already added)
     all_options = sorted(list(set(DEFAULT_KPIS + COMMON_KPIS + st.session_state.get("custom_kpis", []))))
-    
+
+    # If a custom KPI was just added, inject it into the selection before the
+    # multiselect widget renders so Streamlit picks up the new value.
+    pending = st.session_state.pop("_pending_kpi", None)
+    if pending and pending in all_options:
+        current = list(st.session_state.get("selected_kpis", []))
+        if pending not in current:
+            st.session_state.selected_kpis = current + [pending]
+
     # Multiselect widget for "Dropdown List" behavior
     st.multiselect(
         "Select topics",
         options=all_options,
-        key="selected_kpis",  # Bind directly to session state
+        key="selected_kpis",
         help="Choose from the list or add your own topics below."
     )
-    
+
     # Input for custom topics ("Add custom input")
     st.text_input(
         "Add a custom topic",
