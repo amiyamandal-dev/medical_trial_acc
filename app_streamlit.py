@@ -1046,8 +1046,8 @@ def section_results():
 
     # Build markdown table
     table_lines = [
-        "| Topic | Protocol Summary | Requirement Summary | Confidence | Judgement |",
-        "|-------|------------------|---------------------|------------|-----------|"  
+        "| Topic | Protocol Summary | Requirement Summary | Coverage | Judgement |",
+        "|-------|------------------|---------------------|----------|-----------|"
     ]
     
     for item in detailed_results:
@@ -1074,9 +1074,9 @@ def section_results():
         # Requirement summary
         requirement_summary = s3.get("evidence_summary", "—")
         
-        # Confidence
-        confidence_score = item.get("confidence_score", 0.0)
-        confidence_pct = f"{int(confidence_score * 100)}%"
+        # Coverage score
+        coverage_score = item.get("confidence_score", 0.0)
+        confidence_pct = f"{int(coverage_score * 100)}%"
         
         # Clean for markdown (remove pipes and newlines)
         kpi = kpi.replace("|", "\\|").replace("\n", " ")
@@ -1103,7 +1103,7 @@ def section_results():
                     "Topic": item.get("kpi", item.get("requirement", "")),
                     "Protocol Summary": s1.get("protocol_context", ""),
                     "Requirement Summary": s3.get("evidence_summary", ""),
-                    "Confidence": item.get("confidence_score", 0.0),
+                    "Coverage": item.get("confidence_score", 0.0),
                     "Judgement": {"followed": "Match", "partial": "Partial", "not_followed": "No Match"}.get(status, status)
                 })
 

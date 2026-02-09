@@ -717,6 +717,32 @@ List all gaps identified.
         
         return [e for e in evidence_list if e is not None]
 
+    def _compute_compliance_score(self, result: dict) -> Tuple[float, str]:
+        """Compute compliance score from Step 3.2 evidence checks.
+
+        Returns (score, status) where score is 0.0-1.0 and status is the
+        judgement derived from it. This ensures score and judgement are
+        always consistent.
+        """
+        checks = result.get("step_3_2_checks", [])
+        total = len(checks)
+        if total == 0:
+            return 0.0, "not_followed"
+
+        full = sum(1 for c in checks if c.get("coverage_level") == "full")
+        partial = sum(1 for c in checks if c.get("coverage_level") == "partial")
+
+        score = (full + partial * 0.5) / total
+
+        if score >= 0.8:
+            status = "followed"
+        elif score >= 0.4:
+            status = "partial"
+        else:
+            status = "not_followed"
+
+        return score, status
+
     def _step_3_3_judge(
         self, kpi: str, conditions: List, source_sections: List, source_quotes: List,
         evidence_list: List[str], result: dict
@@ -728,7 +754,10 @@ List all gaps identified.
             "summary_text": f"{len(conditions)} condition(s) extracted from protocol"
         }
         result["step_3_1_summary"] = step_3_1_summary
-        
+
+        # Compute compliance score from actual Step 3.2 evidence
+        compliance_score, derived_status = self._compute_compliance_score(result)
+
         # Format conditions with sources
         conditions_text = "\n".join([
             f"- {cond}\n  Source: Protocol {source_sections[i] if i < len(source_sections) else 'Unknown'}"
@@ -743,50 +772,35 @@ List all gaps identified.
                 "evidence": evidence_text
             })
             result["step_3_3_judgement"] = {
-                "status": step_result.status,
-                "confidence_score": step_result.confidence_score,
+                "status": derived_status,
+                "confidence_score": compliance_score,
                 "reasoning": step_result.reasoning,
                 "evidence_summary": step_result.evidence_summary,
                 "gaps_identified": step_result.gaps_identified
             }
-            result["compliance_status"] = step_result.status
-            result["confidence_score"] = step_result.confidence_score
+            result["compliance_status"] = derived_status
+            result["confidence_score"] = compliance_score
             result["explanation"] = step_result.reasoning
             result["gaps_identified"] = step_result.gaps_identified
 
         except Exception as e:
             print(f"    Step 3.3 error: {e}")
-            self._fallback_judgement(result)
+            # Fallback: use computed score + collect gaps from step 3.2
+            checks = result.get("step_3_2_checks", [])
+            gaps = [c.get("gap_description", "") for c in checks
+                    if c.get("coverage_level") in ["partial", "none"] and c.get("gap_description")]
 
-    def _fallback_judgement(self, result: dict):
-        """Calculate fallback judgement from Step 3.2 results"""
-        checks = result["step_3_2_checks"]
-        full = sum(1 for c in checks if c.get("coverage_level") == "full")
-        partial = sum(1 for c in checks if c.get("coverage_level") == "partial")
-        total = len(checks)
-
-        gaps = [c.get("gap_description", "") for c in checks
-                if c.get("coverage_level") in ["partial", "none"] and c.get("gap_description")]
-
-        if total > 0:
-            pct = (full + partial * 0.5) / total
-            if pct >= 0.8:
-                result["compliance_status"] = "followed"
-            elif pct >= 0.4:
-                result["compliance_status"] = "partial"
-            else:
-                result["compliance_status"] = "not_followed"
-            result["confidence_score"] = pct
-
-        result["explanation"] = f"Fallback: {full}/{total} full, {partial} partial"
-        result["gaps_identified"] = "; ".join(gaps) if gaps else "Could not determine"
-        result["step_3_3_judgement"] = {
-            "status": result["compliance_status"],
-            "confidence_score": result["confidence_score"],
-            "reasoning": result["explanation"],
-            "evidence_summary": "Fallback analysis",
-            "gaps_identified": result["gaps_identified"]
-        }
+            result["compliance_status"] = derived_status
+            result["confidence_score"] = compliance_score
+            result["explanation"] = f"Based on evidence: {sum(1 for c in checks if c.get('coverage_level') == 'full')}/{len(checks)} conditions fully covered"
+            result["gaps_identified"] = "; ".join(gaps) if gaps else "Could not determine"
+            result["step_3_3_judgement"] = {
+                "status": derived_status,
+                "confidence_score": compliance_score,
+                "reasoning": result["explanation"],
+                "evidence_summary": "Computed from condition checks",
+                "gaps_identified": result["gaps_identified"]
+            }
 
     def generate_summary(self, results: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Generate summary statistics from analysis results"""
@@ -1081,7 +1095,7 @@ class ReportGenerator:
                         <th style="padding: 10px; text-align: left; width: 20%;">Topic</th>
                         <th style="padding: 10px; text-align: left; width: 30%;">Protocol Summary</th>
                         <th style="padding: 10px; text-align: left; width: 30%;">Requirement Summary</th>
-                        <th style="padding: 10px; text-align: center; width: 10%;">Confidence</th>
+                        <th style="padding: 10px; text-align: center; width: 10%;">Coverage</th>
                         <th style="padding: 10px; text-align: center; width: 10%;">Judgement</th>
                     </tr>
                 </thead>
@@ -1108,7 +1122,7 @@ class ReportGenerator:
             protocol_summary = html.escape(protocol_summary)
             req_summary = html.escape(req_summary)
 
-            # Confidence
+            # Coverage score
             conf = req.get('confidence_score', 0.0) * 100
             
             # Status styling
@@ -1154,7 +1168,7 @@ class ReportGenerator:
             lines.extend([
                 f"### {status_icon} {req['kpi'][:80]}",
                 "",
-                f"**Status:** {req['compliance_status'].upper()} | **Confidence:** {req['confidence_score']*100:.0f}%",
+                f"**Status:** {req['compliance_status'].upper()} | **Coverage:** {req['confidence_score']*100:.0f}%",
                 "",
                 f"**Analysis:** {req['explanation'][:500]}",
                 "",
