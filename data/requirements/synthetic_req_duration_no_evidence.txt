@@ -1,0 +1,131 @@
+CLINICAL TRIAL REQUIREMENTS DOCUMENT
+Study Reference: Synthetic Diabetes Therapeutic Study - Duration No Evidence
+Document Version: 1.0
+Date: April 2024
+Synthetic Data: YES
+
+REQUIREMENTS FOR PHASE 3 DIABETES CLINICAL TRIAL
+
+This document outlines the key requirements that must be followed for the conduct of a Phase 3 clinical trial in Type 2 Diabetes Mellitus with cardiovascular outcomes assessment.
+
+1. STUDY DESIGN REQUIREMENTS
+
+1.1 The study must be randomized and double-blind to minimize bias.
+
+1.2 A placebo control arm must be included for efficacy comparison.
+
+1.3 The study must be designed as a cardiovascular outcomes trial (CVOT) with a minimum treatment duration of 104 weeks (2 years) to adequately demonstrate cardiovascular safety and potential cardiovascular benefit, in alignment with FDA guidance on evaluating cardiovascular risk for new diabetes therapies.
+
+1.4 Stratified randomization should be used based on baseline HbA1c levels.
+
+1.5 The total study duration, including screening, active treatment, and post-treatment follow-up, must be at least 130 weeks (approximately 2.5 years). The post-treatment follow-up period must be at least 24 weeks to assess any rebound effects and sustained cardiovascular outcomes after treatment discontinuation.
+
+1.6 The study must include a mandatory run-in period of at least 8 weeks prior to randomization, during which patients receive single-blind placebo to assess compliance, tolerability, and establish stable baseline measurements.
+
+1.7 An event-driven design component must be incorporated, requiring the accumulation of at least 250 adjudicated major adverse cardiovascular events (MACE) as a co-primary endpoint, independent of the time-based treatment duration.
+
+2. PATIENT POPULATION REQUIREMENTS
+
+2.1 Patients must have confirmed Type 2 Diabetes Mellitus diagnosis for at least 12 months.
+
+2.2 Baseline HbA1c must be between 7.0% and 10.5% inclusive.
+
+2.3 Patients must be on stable metformin therapy (minimum 1500 mg/day) for at least 12 weeks.
+
+2.4 BMI should be between 25 and 45 kg/m².
+
+2.5 Patients with Type 1 diabetes must be excluded.
+
+2.6 Patients with history of pancreatitis must be excluded for GLP-1 agonist studies.
+
+2.7 Pregnant or breastfeeding women must be excluded.
+
+2.8 Patients must have established cardiovascular disease OR at least 2 cardiovascular risk factors (hypertension, dyslipidemia, current smoking, or microalbuminuria) to ensure adequate cardiovascular event rates.
+
+2.9 Minimum age for enrollment must be 40 years to enrich the population for cardiovascular events.
+
+3. EFFICACY ENDPOINTS REQUIREMENTS
+
+3.1 Co-primary endpoints must include:
+    a) Change in HbA1c from baseline at Week 104
+    b) Time to first occurrence of MACE (composite of cardiovascular death, non-fatal myocardial infarction, and non-fatal stroke)
+
+3.2 Secondary endpoints should include fasting plasma glucose changes at Week 52 and Week 104.
+
+3.3 Proportion of patients achieving HbA1c target of <7% must be assessed at Week 52 and Week 104.
+
+3.4 Body weight changes must be monitored as a secondary endpoint.
+
+3.5 Hospitalization for heart failure must be assessed as a pre-specified secondary cardiovascular endpoint.
+
+3.6 All-cause mortality must be reported as a secondary endpoint.
+
+4. SAFETY MONITORING REQUIREMENTS
+
+4.1 All adverse events must be collected and coded using MedDRA.
+
+4.2 Pancreatic enzymes (amylase and lipase) must be monitored regularly.
+
+4.3 12-lead ECG must be performed at baseline and at minimum every 12 weeks throughout the 104-week treatment period.
+
+4.4 Vital signs including blood pressure and heart rate must be recorded at each visit.
+
+4.5 Laboratory assessments must include complete blood count and comprehensive metabolic panel.
+
+4.6 An independent Clinical Events Committee (CEC) must be established for blinded adjudication of all cardiovascular events.
+
+4.7 An independent Data Safety Monitoring Board (DSMB) must conduct scheduled safety reviews at least every 6 months throughout the study.
+
+4.8 Cardiac biomarkers (troponin and NT-proBNP) must be measured at baseline and at Weeks 26, 52, 78, and 104.
+
+5. INFORMED CONSENT REQUIREMENTS
+
+5.1 Written informed consent must be obtained before any study procedures.
+
+5.2 Consent process must follow ICH-GCP guidelines.
+
+5.3 Patients must have adequate time to consider participation.
+
+6. DATA MANAGEMENT REQUIREMENTS
+
+6.1 Electronic Data Capture (EDC) system must be used.
+
+6.2 Query management must be implemented for data quality.
+
+6.3 Database lock procedures must be defined.
+
+7. STATISTICAL REQUIREMENTS
+
+7.1 Intent-to-treat analysis must be the primary analysis population.
+
+7.2 Per-protocol analysis should be conducted as sensitivity analysis.
+
+7.3 Sample size must provide at least 90% power for both co-primary endpoints.
+
+7.4 A non-inferiority margin of 1.3 for the upper bound of the 95% CI of the hazard ratio for MACE must be pre-specified for the cardiovascular safety assessment.
+
+7.5 A hierarchical testing procedure must be used to control type I error across the co-primary endpoints.
+
+8. REGULATORY REQUIREMENTS
+
+8.1 IRB/EC approval must be obtained before study initiation.
+
+8.2 Study must comply with applicable regulatory requirements.
+
+8.3 All protocol amendments must be approved before implementation.
+
+8.4 The study must be designed to meet FDA and EMA guidance on cardiovascular outcome trials for diabetes therapies.
+
+---
+MATCHING NOTES (for evaluation purposes):
+- Requirement 1.3 specifies minimum 104 weeks (2 years) treatment as a CVOT.
+- Requirement 1.5 specifies total duration of at least 130 weeks (~2.5 years).
+- Requirement 1.6 specifies mandatory 8-week single-blind placebo run-in period.
+- Requirement 1.7 specifies event-driven design with 250 MACE events.
+- Protocol CTR-2024-001-DM has only 52-week treatment + 4-week follow-up = 58 weeks total.
+- Protocol has NO CVOT component, NO run-in period, NO event-driven design.
+- Protocol does NOT include cardiovascular endpoints (MACE, HF hospitalization, all-cause mortality).
+- Protocol does NOT require established CVD or CV risk factors for enrollment.
+- Protocol enrolls patients aged 18+, not 40+ as required.
+- Protocol has NO CEC, DSMB, or cardiac biomarker assessments.
+- EXPECTED MATCH RESULT: NO EVIDENCE (protocol is a standard efficacy trial with no cardiovascular outcomes design; study duration is fundamentally mismatched at 58 weeks vs required 130 weeks)

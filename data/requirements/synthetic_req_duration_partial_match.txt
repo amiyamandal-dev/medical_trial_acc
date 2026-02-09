@@ -1,0 +1,115 @@
+CLINICAL TRIAL REQUIREMENTS DOCUMENT
+Study Reference: Synthetic Diabetes Therapeutic Study - Duration Partial Match
+Document Version: 1.0
+Date: April 2024
+Synthetic Data: YES
+
+REQUIREMENTS FOR PHASE 3 DIABETES CLINICAL TRIAL
+
+This document outlines the key requirements that must be followed for the conduct of a Phase 3 clinical trial in Type 2 Diabetes Mellitus.
+
+1. STUDY DESIGN REQUIREMENTS
+
+1.1 The study must be randomized and double-blind to minimize bias.
+
+1.2 A placebo control arm must be included for efficacy comparison.
+
+1.3 The total study duration, including screening, treatment, and follow-up, must be at least 78 weeks (approximately 18 months) to adequately assess long-term glycemic durability and sustained treatment effect.
+
+1.4 Stratified randomization should be used based on baseline HbA1c levels.
+
+1.5 The active treatment period must be at least 52 weeks, followed by a minimum 26-week extended observation period to evaluate durability of glycemic control after the primary treatment phase.
+
+1.6 An interim analysis must be conducted at Week 26 and a second interim analysis at Week 52 to evaluate early efficacy signals and safety trends before the extended observation phase begins.
+
+2. PATIENT POPULATION REQUIREMENTS
+
+2.1 Patients must have confirmed Type 2 Diabetes Mellitus diagnosis for at least 6 months.
+
+2.2 Baseline HbA1c must be between 7.0% and 10.5% inclusive.
+
+2.3 Patients must be on stable metformin therapy (minimum 1500 mg/day) for at least 8 weeks.
+
+2.4 BMI should be between 25 and 45 kg/m².
+
+2.5 Patients with Type 1 diabetes must be excluded.
+
+2.6 Patients with history of pancreatitis must be excluded for GLP-1 agonist studies.
+
+2.7 Pregnant or breastfeeding women must be excluded.
+
+3. EFFICACY ENDPOINTS REQUIREMENTS
+
+3.1 Primary endpoint must be change in HbA1c from baseline at Week 78 (end of extended observation period).
+
+3.2 Key secondary endpoint must be change in HbA1c from baseline at Week 52 (end of active treatment).
+
+3.3 Secondary endpoints should include fasting plasma glucose changes at Week 52 and Week 78.
+
+3.4 Proportion of patients achieving HbA1c target of <7% must be assessed at both Week 52 and Week 78.
+
+3.5 Body weight changes must be monitored as a secondary endpoint.
+
+3.6 Glycemic durability, defined as maintenance of HbA1c <7.5% from Week 52 through Week 78, must be reported.
+
+4. SAFETY MONITORING REQUIREMENTS
+
+4.1 All adverse events must be collected and coded using MedDRA.
+
+4.2 Pancreatic enzymes (amylase and lipase) must be monitored regularly.
+
+4.3 12-lead ECG must be performed at baseline and key timepoints including the extended observation period.
+
+4.4 Vital signs including blood pressure and heart rate must be recorded at each visit.
+
+4.5 Laboratory assessments must include complete blood count and comprehensive metabolic panel.
+
+4.6 Safety monitoring must continue through the entire 78-week study period including the extended observation phase.
+
+5. INFORMED CONSENT REQUIREMENTS
+
+5.1 Written informed consent must be obtained before any study procedures.
+
+5.2 Consent process must follow ICH-GCP guidelines.
+
+5.3 Patients must have adequate time to consider participation.
+
+5.4 Patients must be re-consented before entering the extended observation period at Week 52.
+
+6. DATA MANAGEMENT REQUIREMENTS
+
+6.1 Electronic Data Capture (EDC) system must be used.
+
+6.2 Query management must be implemented for data quality.
+
+6.3 Database lock procedures must be defined.
+
+7. STATISTICAL REQUIREMENTS
+
+7.1 Intent-to-treat analysis must be the primary analysis population.
+
+7.2 Per-protocol analysis should be conducted as sensitivity analysis.
+
+7.3 Sample size must provide at least 90% power for primary endpoint at Week 78.
+
+7.4 Multiplicity adjustment must be applied for interim analyses at Week 26 and Week 52.
+
+8. REGULATORY REQUIREMENTS
+
+8.1 IRB/EC approval must be obtained before study initiation.
+
+8.2 Study must comply with applicable regulatory requirements.
+
+8.3 All protocol amendments must be approved before implementation.
+
+---
+MATCHING NOTES (for evaluation purposes):
+- Requirement 1.3 specifies total study duration of at least 78 weeks.
+- Requirement 1.5 specifies 52-week treatment + 26-week extended observation.
+- Protocol CTR-2024-001-DM has 52-week treatment + 4-week follow-up = 58 weeks total.
+- The protocol MEETS the 52-week active treatment requirement.
+- The protocol DOES NOT MEET the 78-week total duration or the 26-week extended observation.
+- The protocol has NO interim analysis at Week 26 or Week 52 (Requirement 1.6 unmet).
+- The protocol has NO re-consent process at Week 52 (Requirement 5.4 unmet).
+- Primary endpoint at Week 78 (Requirement 3.1) is NOT addressed; protocol measures at Week 52 only.
+- EXPECTED MATCH RESULT: PARTIALLY MET (treatment duration met, but total duration, extended observation, and interim analyses not met)
