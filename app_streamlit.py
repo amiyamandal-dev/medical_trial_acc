@@ -1003,11 +1003,11 @@ def render_executive_summary(summary: dict):
 
     # Single line executive summary
     if not_followed > 0:
-        st.error(f"**{not_followed} of {total} topics need attention** — {followed} match, {partial} partial match")
+        st.error(f"**{not_followed} of {total} topics have significant gaps.** {followed} aligned, {partial} partially aligned. Review the details below.")
     elif partial > 0:
-        st.warning(f"**{partial} of {total} topics have minor differences** — {followed} match fully")
+        st.warning(f"**{partial} of {total} topics are partially aligned.** {followed} fully aligned. Expand each topic to see what differs.")
     else:
-        st.success(f"**All {total} topics match** — No issues found")
+        st.success(f"**All {total} topics are aligned.** No gaps found between your documents.")
 
 
 def section_results():
@@ -1045,47 +1045,54 @@ def section_results():
 
     # Build markdown table
     table_lines = [
-        "| Topic | Protocol Summary | Requirement Summary | Coverage | Judgement |",
-        "|-------|------------------|---------------------|----------|-----------|"
+        "| Topic | Protocol Says | Requirements Say | Alignment | What to Check |",
+        "|-------|---------------|------------------|-----------|---------------|"
     ]
-    
+
     for item in detailed_results:
         kpi = item.get("kpi", item.get("requirement", "Unknown"))
         status = item.get("compliance_status", "unknown")
-        
-        # Status display
-        status_map = {
-            "followed": "Match",
-            "partial": "Partial",
-            "not_followed": "No Match"
-        }
-        status_display = status_map.get(status, "Unknown")
-        
+
+        # Plain-language status with alignment description
+        coverage_score = item.get("confidence_score", 0.0)
+        if status == "followed":
+            alignment_display = "Aligned"
+        elif status == "partial":
+            alignment_display = "Partially Aligned"
+        else:
+            alignment_display = "Not Aligned"
+
         s1 = item.get("step_3_1_conditions", {})
         s3 = item.get("step_3_3_judgement", {})
-        
+
         # Protocol summary
         protocol_summary = s1.get("protocol_context", "—")
         if not protocol_summary or protocol_summary == "Error":
             conditions = s1.get("conditions", [])
             protocol_summary = "; ".join(conditions) if conditions else "—"
-        
+
         # Requirement summary
         requirement_summary = s3.get("evidence_summary", "—")
-        
-        # Coverage score
-        coverage_score = item.get("confidence_score", 0.0)
-        confidence_pct = f"{int(coverage_score * 100)}%"
-        
+
+        # What to check — pull from gaps if not aligned, else say no action
+        gaps = s3.get("gaps_identified", "")
+        if status == "followed":
+            what_to_check = "No action needed"
+        elif gaps:
+            what_to_check = gaps[:120]
+        else:
+            what_to_check = "Review details below"
+
         # Clean for markdown (remove pipes and newlines)
         kpi = kpi.replace("|", "\\|").replace("\n", " ")
         protocol_summary = protocol_summary.replace("|", "\\|").replace("\n", " ")
         requirement_summary = requirement_summary.replace("|", "\\|").replace("\n", " ")
-        
+        what_to_check = what_to_check.replace("|", "/").replace("\n", " ")
+
         table_lines.append(
-            f"| {kpi} | {protocol_summary} | {requirement_summary} | {confidence_pct} | {status_display} |"
+            f"| {kpi} | {protocol_summary} | {requirement_summary} | {alignment_display} | {what_to_check} |"
         )
-    
+
     st.markdown("\n".join(table_lines))
 
     # Export buttons
@@ -1097,13 +1104,17 @@ def section_results():
                 status = item.get("compliance_status", "")
                 s1 = item.get("step_3_1_conditions", {})
                 s3 = item.get("step_3_3_judgement", {})
-                
+                gaps = s3.get("gaps_identified", "")
+
+                alignment_label = {"followed": "Aligned", "partial": "Partially Aligned", "not_followed": "Not Aligned"}.get(status, status)
+                what_to_check = "No action needed" if status == "followed" else (gaps if gaps else "Review details")
+
                 csv_data.append({
                     "Topic": item.get("kpi", item.get("requirement", "")),
-                    "Protocol Summary": s1.get("protocol_context", ""),
-                    "Requirement Summary": s3.get("evidence_summary", ""),
-                    "Coverage": item.get("confidence_score", 0.0),
-                    "Judgement": {"followed": "Match", "partial": "Partial", "not_followed": "No Match"}.get(status, status)
+                    "Protocol Says": s1.get("protocol_context", ""),
+                    "Requirements Say": s3.get("evidence_summary", ""),
+                    "Alignment": alignment_label,
+                    "What to Check": what_to_check
                 })
 
             csv_df = pd.DataFrame(csv_data)
@@ -1130,8 +1141,8 @@ def section_detailed_analysis(detailed_results: List[dict]):
         kpi = item.get("kpi", item.get("requirement", "Unknown"))
         status = item.get("compliance_status", "unknown")
 
-        # Simple status indicator without confidence score
-        status_icon = {"followed": "[MATCH]", "partial": "[PARTIAL]", "not_followed": "[NO MATCH]"}.get(status, "[?]")
+        # Plain-language status indicator
+        status_icon = {"followed": "[ALIGNED]", "partial": "[PARTIALLY ALIGNED]", "not_followed": "[NOT ALIGNED]"}.get(status, "[?]")
 
         with st.expander(f"{status_icon} {kpi}", expanded=False):
             s1 = item.get("step_3_1_conditions", {})
@@ -1165,11 +1176,11 @@ def section_detailed_analysis(detailed_results: List[dict]):
 
                     # Status label
                     if coverage == "full":
-                        st.success(f"**[FOUND]** {condition_text}")
+                        st.success(f"**Addressed:** {condition_text}")
                     elif coverage == "partial":
-                        st.warning(f"**[PARTIAL]** {condition_text}")
+                        st.warning(f"**Partially addressed:** {condition_text}")
                     else:
-                        st.error(f"**[NOT FOUND]** {condition_text}")
+                        st.error(f"**Not addressed:** {condition_text}")
                     
                     if evidence:
                         st.caption(f"Evidence: {evidence}")
@@ -1191,9 +1202,9 @@ def section_detailed_analysis(detailed_results: List[dict]):
                 st.markdown(reasoning)
 
             if gaps and status != "followed":
-                st.warning(f"**Action Required:** {gaps}")
+                st.warning(f"**What to check:** {gaps}")
             elif status == "followed":
-                st.success("No action needed - documents are aligned.")
+                st.success("Documents are aligned on this topic. No action needed.")
 
 
 def section_history():

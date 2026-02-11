@@ -1050,9 +1050,32 @@ class ComplianceAnalyzer:
 class ReportGenerator:
     """Generate formatted markdown reports"""
 
+    # Severity order for sorting: most critical first
+    _STATUS_ORDER = {"not_followed": 0, "partial": 1, "error": 2, "not_applicable": 3, "followed": 4}
+
+    @staticmethod
+    def _sort_by_severity(detailed_results: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Sort results so Not Aligned topics appear first"""
+        return sorted(
+            detailed_results,
+            key=lambda r: ReportGenerator._STATUS_ORDER.get(r.get("compliance_status", "error"), 99)
+        )
+
     @staticmethod
     def generate_markdown_report(result: Dict[str, Any], output_path: Path = None) -> str:
         """Generate markdown report from analysis results"""
+        summary = result['summary']
+        compliance_rate = summary['compliance_rate']
+        detailed_results = ReportGenerator._sort_by_severity(result.get('detailed_results', []))
+
+        status_label_map = {
+            "followed": "Aligned",
+            "partial": "Partially Aligned",
+            "not_followed": "Not Aligned",
+            "not_applicable": "N/A",
+            "error": "Error"
+        }
+
         lines = [
             "# Clinical Trial Compliance Analysis Report",
             "",
@@ -1065,85 +1088,94 @@ class ReportGenerator:
             "",
         ]
 
-        # Summary
-        summary = result['summary']
-        compliance_rate = summary['compliance_rate']
+        # ── How to read this report ──
+        lines.extend([
+            "## How to Read This Report",
+            "",
+            "This report compares your **Protocol** and **Requirements** documents topic by topic.",
+            "Each topic is assigned one of three alignment levels:",
+            "",
+            "| Status | Meaning |",
+            "|--------|---------|",
+            "| **Aligned** | Both documents agree on this topic. No action needed. |",
+            "| **Partially Aligned** | The requirements document covers this topic but is missing some details from the protocol. Review recommended. |",
+            "| **Not Aligned** | The requirements document does not adequately address what the protocol specifies. Action required. |",
+            "",
+            "> Topics that need the most attention appear first throughout the report.",
+            "",
+        ])
+
+        # ── Executive Summary (HTML table only, no duplicate markdown table) ──
         badge = "HIGH" if compliance_rate >= 80 else "MODERATE" if compliance_rate >= 60 else "LOW"
 
         lines.extend([
             "## Executive Summary",
             "",
-            f"### Overall Compliance: {compliance_rate:.1f}% ({badge})",
-            "",
-            "| Metric | Count |",
-            "|--------|-------|",
-            f"| Total KPIs | {summary['total_requirements']} |",
-            f"| Followed | {summary['followed']} |",
-            f"| Partial | {summary['partial']} |",
-            f"| Not Followed | {summary['not_followed']} |",
+            f"**Overall Alignment: {compliance_rate:.1f}% ({badge})** "
+            f"&mdash; {summary['followed']} aligned, {summary['partial']} partially aligned, "
+            f"{summary['not_followed']} not aligned out of {summary['total_requirements']} topics.",
             "",
         ])
 
-        # HTML Executive Summary Table
-        lines.append("### Summary Table")
-        lines.append("")
-        
+        # Alerts
+        if summary['not_followed'] > 0:
+            lines.append(f"> **{summary['not_followed']} topic(s) have significant gaps. See details below.**")
+            lines.append("")
+
+        # HTML Summary Table
         table_html = textwrap.dedent("""
             <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 14px; margin-bottom: 20px;">
                 <thead>
                     <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
-                        <th style="padding: 10px; text-align: left; width: 20%;">Topic</th>
-                        <th style="padding: 10px; text-align: left; width: 30%;">Protocol Summary</th>
-                        <th style="padding: 10px; text-align: left; width: 30%;">Requirement Summary</th>
-                        <th style="padding: 10px; text-align: center; width: 10%;">Coverage</th>
-                        <th style="padding: 10px; text-align: center; width: 10%;">Judgement</th>
+                        <th style="padding: 10px; text-align: left; width: 15%;">Topic</th>
+                        <th style="padding: 10px; text-align: left; width: 25%;">Protocol Says</th>
+                        <th style="padding: 10px; text-align: left; width: 25%;">Requirements Say</th>
+                        <th style="padding: 10px; text-align: center; width: 10%;">Alignment</th>
+                        <th style="padding: 10px; text-align: left; width: 25%;">What to Check</th>
                     </tr>
                 </thead>
                 <tbody>""")
 
-        for req in result['detailed_results']:
-            kpi = req.get('kpi', req.get('requirement', 'Unknown'))
-            
-            # Extract Protocol Summary
+        status_style_map = {
+            "followed": ("Aligned", "#d1fae5", "#065f46"),
+            "partial": ("Partially Aligned", "#fef3c7", "#92400e"),
+            "not_followed": ("Not Aligned", "#fee2e2", "#991b1b"),
+            "not_applicable": ("N/A", "#f3f4f6", "#1f2937")
+        }
+
+        for req in detailed_results:
+            kpi = html.escape(req.get('kpi', req.get('requirement', 'Unknown')))
+
             s1 = req.get('step_3_1_conditions') or {}
             protocol_summary = s1.get('protocol_context', '')
             if not protocol_summary or protocol_summary == "Error":
-                 conds = s1.get('conditions', [])
-                 protocol_summary = "; ".join(conds) if conds else "—"
-            
-            # Extract Requirement Summary
-            s3 = req.get('step_3_3_judgement') or {}
-            req_summary = s3.get('evidence_summary', '')
-            if not req_summary:
-                req_summary = "—"
-
-            # Escape HTML content
-            kpi = html.escape(kpi)
+                conds = s1.get('conditions', [])
+                protocol_summary = "; ".join(conds) if conds else "—"
             protocol_summary = html.escape(protocol_summary)
-            req_summary = html.escape(req_summary)
 
-            # Coverage score
-            conf = req.get('confidence_score', 0.0) * 100
-            
-            # Status styling
+            s3 = req.get('step_3_3_judgement') or {}
+            req_summary = html.escape(s3.get('evidence_summary', '') or "—")
+
             status = req.get('compliance_status', 'unknown')
-            status_map = {
-                "followed": ("Match", "#d1fae5", "#065f46"),
-                "partial": ("Partial", "#fef3c7", "#92400e"),
-                "not_followed": ("No Match", "#fee2e2", "#991b1b"),
-                "not_applicable": ("N/A", "#f3f4f6", "#1f2937")
-            }
-            status_text, bg_color, text_color = status_map.get(status, (status, "#fff", "#000"))
-            
+            status_text, bg_color, text_color = status_style_map.get(status, (status, "#fff", "#000"))
+
+            s3_gaps = s3.get('gaps_identified', '')
+            if status == "followed":
+                what_to_check = "No action needed"
+            elif s3_gaps:
+                what_to_check = html.escape(s3_gaps[:150])
+            else:
+                what_to_check = "Review details below"
+
             table_html += f"""
         <tr style="border-bottom: 1px solid #e9ecef;">
             <td style="padding: 10px; vertical-align: top;"><strong>{kpi}</strong></td>
             <td style="padding: 10px; vertical-align: top;">{protocol_summary}</td>
             <td style="padding: 10px; vertical-align: top;">{req_summary}</td>
-            <td style="padding: 10px; text-align: center; vertical-align: top;">{conf:.0f}%</td>
             <td style="padding: 10px; text-align: center; vertical-align: top;">
                 <span style="background-color: {bg_color}; color: {text_color}; padding: 4px 10px; border-radius: 12px; font-weight: bold; font-size: 12px; white-space: nowrap;">{status_text}</span>
             </td>
+            <td style="padding: 10px; vertical-align: top;">{what_to_check}</td>
         </tr>"""
 
         table_html += """
@@ -1153,39 +1185,92 @@ class ReportGenerator:
         lines.append(table_html)
         lines.append("")
 
-        # Alerts
-        if summary['not_followed'] > 0:
-            lines.append(f"**{summary['not_followed']} KPI(s) need immediate attention.**")
-            lines.append("")
-
-        # Detailed Results
+        # ── Detailed Analysis ──
         lines.extend(["---", "", "## Detailed Analysis", ""])
 
-        for req in result['detailed_results']:
-            status_icon = {"followed": "", "partial": "", "not_followed": ""}.get(
-                req['compliance_status'], ""
-            )
+        for req in detailed_results:
+            status = req.get('compliance_status', 'unknown')
+            label = status_label_map.get(status, status)
+            kpi_name = req.get('kpi', req.get('requirement', 'Unknown'))[:80]
+
             lines.extend([
-                f"### {status_icon} {req['kpi'][:80]}",
+                f"### {kpi_name}",
                 "",
-                f"**Status:** {req['compliance_status'].upper()} | **Coverage:** {req['confidence_score']*100:.0f}%",
-                "",
-                f"**Analysis:** {req['explanation'][:500]}",
+                f"**Status:** {label}",
                 "",
             ])
 
-            if req.get('gaps_identified'):
-                lines.append(f"**Gaps:** {req['gaps_identified'][:300]}")
+            # ── Sub-section: What the Protocol Says ──
+            s1 = req.get('step_3_1_conditions') or {}
+            conditions = s1.get('conditions', [])
+            sources = s1.get('source_sections', [])
+
+            lines.append("#### Protocol Says")
+            lines.append("")
+            if conditions:
+                for i, cond in enumerate(conditions):
+                    src = sources[i] if i < len(sources) else ""
+                    src_note = f" *(Source: {src})*" if src else ""
+                    lines.append(f"{i+1}. {cond}{src_note}")
+                lines.append("")
+            else:
+                lines.extend(["No specific conditions found in the protocol for this topic.", ""])
+
+            # ── Sub-section: What the Requirements Say (per-condition results) ──
+            s2 = req.get('step_3_2_checks', [])
+
+            lines.append("#### Requirements Say")
+            lines.append("")
+            if s2:
+                lines.extend([
+                    "| # | Condition | Status | Evidence | Gap |",
+                    "|---|-----------|--------|----------|-----|",
+                ])
+                for i, check in enumerate(s2, 1):
+                    cond_text = check.get('condition', '').replace('|', '/').replace('\n', ' ')
+                    coverage = check.get('coverage_level', 'none')
+                    coverage_label = {"full": "Addressed", "partial": "Partially addressed", "none": "Not addressed"}.get(coverage, coverage)
+                    evidence = check.get('evidence_quote', '').replace('|', '/').replace('\n', ' ')
+                    if len(evidence) > 120:
+                        evidence = evidence[:120] + "..."
+                    gap = check.get('gap_description', '').replace('|', '/').replace('\n', ' ')
+                    if coverage == "full":
+                        gap = "—"
+                    elif not gap:
+                        gap = "—"
+                    lines.append(f"| {i} | {cond_text} | {coverage_label} | {evidence} | {gap} |")
+                lines.append("")
+            else:
+                lines.extend(["No per-condition evidence available.", ""])
+
+            # ── Sub-section: Gaps / What to Check ──
+            s3 = req.get('step_3_3_judgement') or {}
+            gaps = s3.get('gaps_identified', req.get('gaps_identified', ''))
+
+            if status == "followed":
+                lines.extend([
+                    "#### Result",
+                    "",
+                    "Documents are aligned on this topic. No action needed.",
+                    "",
+                ])
+            else:
+                lines.append("#### What to Check")
+                lines.append("")
+                if gaps:
+                    lines.append(gaps)
+                else:
+                    lines.append("Review the condition table above for specific differences.")
                 lines.append("")
 
             lines.extend(["---", ""])
 
-        # Footer
+        # ── Footer ──
         lines.extend([
             "## Metadata",
             "",
             f"- **Analysis Method:** 3-Step KPI Compliance Analysis",
-            f"- **KPIs Analyzed:** {summary['total_requirements']}",
+            f"- **Topics Analyzed:** {summary['total_requirements']}",
             "",
             "*Generated by Clinical Trial Compliance Analyzer*"
         ])
