@@ -15,6 +15,11 @@ from pydantic import BaseModel
 import uvicorn
 
 from src.compliance_analyzer import ComplianceAnalyzer, ReportGenerator, Config
+from src.sop_oos_analyzer import (
+    extract_sop_data, extract_oos_data, compare_sop_oos,
+    extract_sop_data_llm, extract_oos_data_llm,
+    extract_sop_data_llm_only, extract_oos_data_llm_only,
+)
 
 
 PROTOCOLS_DB_PATH = Config.DATA_DIR / "protocols.db"
@@ -787,6 +792,53 @@ async def delete_history_record(record_id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete record: {e}")
 
+
+
+@app.post("/sop-oos/analyze")
+async def analyze_sop_oos(
+    sop_file: UploadFile = File(...),
+    oos_file: UploadFile = File(...),
+    mode: str = Form(default="llm"),
+):
+    """Compare SOP acceptance criteria against OOS investigation results.
+
+    Extraction modes:
+      - "llm" (default): LLM-only extraction via OpenAI — no regex/static rules.
+      - "hybrid": LLM extraction merged with regex baseline.
+      - "regex": Deterministic regex extraction only (no LLM).
+    """
+    for f, label in [(sop_file, "SOP"), (oos_file, "OOS")]:
+        suffix = Path(f.filename or "").suffix.lower()
+        if suffix != ".pdf":
+            raise HTTPException(
+                status_code=400,
+                detail=f"{label} file must be a PDF (got {suffix or 'no extension'})",
+            )
+
+    extractors = {
+        "llm": (extract_sop_data_llm_only, extract_oos_data_llm_only),
+        "hybrid": (extract_sop_data_llm, extract_oos_data_llm),
+        "regex": (extract_sop_data, extract_oos_data),
+    }
+    sop_extractor, oos_extractor = extractors.get(mode, extractors["llm"])
+
+    try:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            sop_path = Path(tmp_dir) / (sop_file.filename or "sop.pdf")
+            oos_path = Path(tmp_dir) / (oos_file.filename or "oos.pdf")
+
+            sop_path.write_bytes(await sop_file.read())
+            oos_path.write_bytes(await oos_file.read())
+
+            sop_data = sop_extractor(sop_path)
+            oos_data = oos_extractor(oos_path)
+            result = compare_sop_oos(sop_data, oos_data)
+
+        return result
+    except Exception as e:
+        import traceback
+        print(f"SOP-OOS analysis error: {traceback.format_exc()}")
+        raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
 
 @app.get("/")
